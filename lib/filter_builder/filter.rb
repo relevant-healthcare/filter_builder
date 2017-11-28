@@ -10,7 +10,7 @@ class Filter
     params.inject(filtered_class.all) do |acc, (key, value)|
       if filtered_class.reflections.include?(key) && value.is_a?(Hash)
         joined_class = filtered_class.reflections[key].klass
-        acc.joins(key.to_sym).merge(FilterBuilder.new(joined_class, value).scope)
+        acc.joins(key.to_sym).merge(Filter.new(joined_class, value).scope)
       elsif acc.respond_to?(key)
         acc.public_send(key, *Array(value))
       elsif acc.respond_to?("with_#{key}")

@@ -1,3 +1,3 @@
 Fabricator :provider do
-  name { sequence(:provider_id) { |i| "Provider #{i}" } }
+  npi { sequence(:provider_id) { |i| "npi #{i}" } }
 end

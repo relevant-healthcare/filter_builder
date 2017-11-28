@@ -1,3 +1,4 @@
-class Patient < ActiveRecord::Base
-  belongs_to :provider
+class Provider < ActiveRecord::Base
+  has_many :patients
+  has_many :visits
 end
