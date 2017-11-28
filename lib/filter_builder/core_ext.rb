@@ -1,7 +1,11 @@
 require 'filter_builder/filter'
 
-ActiveRecord::Base.class_eval do
-  def self.filter(params)
-    Filter.new(self, params).scope
+if Module.const_defined? 'ActiveRecord::Base'
+  ActiveRecord::Base.class_eval do
+    def self.filter(params)
+      where(id: FilterBuilder::Filter.new(self, params)
+                                     .scope
+                                     .select(:id))
+    end
   end
 end
