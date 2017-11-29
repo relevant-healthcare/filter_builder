@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     filter_builder (0.0.1)
-      rails (~> 4.2.8)
 
 GEM
   remote: https://rubygems.org/
@@ -124,6 +123,7 @@ DEPENDENCIES
   fabrication
   filter_builder!
   pg
+  rails (~> 4.2.8)
   rspec-rails
 
 BUNDLED WITH
