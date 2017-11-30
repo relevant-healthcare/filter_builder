@@ -7,16 +7,17 @@ require "filter_builder/version"
 Gem::Specification.new do |s|
   s.name        = "filter_builder"
   s.version     = FilterBuilder::VERSION
-  s.authors     = [""]
+  s.authors     = ["Tassos Bareiss"]
   s.email       = ["tassosbareiss@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of FilterBuilder."
-  s.description = "TODO: Description of FilterBuilder."
+  s.homepage    = "http://relevant.healthcare"
+  s.summary     = "Easy way to filter with ActiveRecord"
+  s.description = "Intelligently builds up ActiveRecord scopes"
   s.license     = "MIT"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 4.2.8"
-
+  s.add_development_dependency "rails", "~> 4.2.8"
   s.add_development_dependency "pg"
+  s.add_development_dependency "fabrication"
+  s.add_development_dependency "rspec-rails"
 end
