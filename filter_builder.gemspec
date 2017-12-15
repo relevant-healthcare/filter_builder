@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
+  s.add_dependency "recursive-open-struct"
   s.add_development_dependency "rails", "~> 4.2.8"
   s.add_development_dependency "pg"
-  s.add_development_dependency "fabrication"
   s.add_development_dependency "rspec-rails"
 end
