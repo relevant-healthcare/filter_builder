@@ -16,7 +16,9 @@ module FilterBuilder
       if method.to_s.ends_with? '='
         attributes.send(method, *args)
       else
-        attributes.send("#{method}=", OpenStruct.new)
+        val = attributes.send(method)
+        return val unless val.nil?
+        attributes[method] = RecursiveOpenStruct.new
       end
     end
 
@@ -35,9 +37,9 @@ module FilterBuilder
     end
 
     def deep_to_h(struct)
-      struct.to_h.each_with_object({}) do |(key, val), acc|
-        acc[key] = val.is_a?(OpenStruct) ? deep_to_h(val) : val
-      end
+      struct.to_h.transform_values do |val|
+        val.is_a?(OpenStruct) ? deep_to_h(val).presence : val
+      end.compact
     end
   end
 end
