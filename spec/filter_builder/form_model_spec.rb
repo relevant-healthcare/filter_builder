@@ -60,7 +60,7 @@ describe FilterBuilder::FormModel do
 
       context 'with empty string values' do
         it 'ignores the empty string values' do
-          form_model.visits.date_on_or_after = ''
+          form_model.a.b.c.d.e.f = ''
           form_model.first_name = ''
           expect(form_model.filter_params).to be_empty
           expect(results).to include included_patient, excluded_patient

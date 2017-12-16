@@ -18,12 +18,12 @@ module FilterBuilder
       else
         val = attributes.send(method)
         return val unless val.nil?
-        attributes[method] = RecursiveOpenStruct.new
+        attributes[method] = self.class.new(filtered_class)
       end
     end
 
     def filter_params
-      deep_cast_to_hash(attributes)
+      deep_cast(attributes)
     end
 
     private
@@ -36,22 +36,15 @@ module FilterBuilder
       FilterBuilder::Filter.new(filtered_class, filter_params)
     end
 
-    def deep_cast_to_hash(struct)
+    def deep_cast(struct)
       struct.to_h.transform_values do |val|
-        if val.is_a?(OpenStruct)
-          deep_cast_to_hash(value).presence
-        else
-          cast_value(val)
+        case val
+        when self.class then deep_cast(val.filter_params).presence
+        when Array then val.map(&:presence)
+        when Hash then val
+        else val.presence
         end
       end.compact
-    end
-
-    def cast_value(value)
-      case value
-      when Array then value.map(&:presence)
-      when Hash then value
-      else value.presence
-      end
     end
   end
 end
