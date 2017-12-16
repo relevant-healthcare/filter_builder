@@ -52,13 +52,19 @@ describe FilterBuilder::FormModel do
     context 'when setting attributes on the form_model object' do
       let(:params) { nil }
 
-      before do
+      it 'builds up the correct scope' do
         form_model.visits.uds_universe = []
         form_model.visits.date_on_or_after = Date.new(2016, 1, 1)
+        expect(results).to contain_exactly included_patient
       end
 
-      it 'builds up the correct scope' do
-        expect(results).to contain_exactly included_patient
+      context 'with empty string values' do
+        it 'ignores the empty string values' do
+          form_model.visits.date_on_or_after = ''
+          form_model.first_name = ''
+          expect(form_model.filter_params).to be_empty
+          expect(results).to include included_patient, excluded_patient
+        end
       end
     end
 

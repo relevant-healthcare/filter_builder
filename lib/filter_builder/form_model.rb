@@ -22,6 +22,10 @@ module FilterBuilder
       end
     end
 
+    def filter_params
+      deep_cast_to_hash(attributes)
+    end
+
     private
 
     def bust_cache!
@@ -32,14 +36,22 @@ module FilterBuilder
       FilterBuilder::Filter.new(filtered_class, filter_params)
     end
 
-    def filter_params
-      deep_to_h(attributes)
+    def deep_cast_to_hash(struct)
+      struct.to_h.transform_values do |val|
+        if val.is_a?(OpenStruct)
+          deep_cast_to_hash(value).presence
+        else
+          cast_value(val)
+        end
+      end.compact
     end
 
-    def deep_to_h(struct)
-      struct.to_h.transform_values do |val|
-        val.is_a?(OpenStruct) ? deep_to_h(val).presence : val
-      end.compact
+    def cast_value(value)
+      case value
+      when Array then value.map(&:presence)
+      when Hash then value
+      else value.presence
+      end
     end
   end
 end
