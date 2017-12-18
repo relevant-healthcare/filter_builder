@@ -13,13 +13,7 @@ module FilterBuilder
 
     def method_missing(method, *args)
       bust_cache!
-      if method.to_s.ends_with? '='
-        attributes.send(method, *args)
-      else
-        val = attributes.send(method)
-        return val unless val.nil?
-        attributes[method] = self.class.new(filtered_class)
-      end
+      attributes.send(method, *args)
     end
 
     def filter_params
@@ -39,9 +33,8 @@ module FilterBuilder
     def deep_cast(struct)
       struct.to_h.transform_values do |val|
         case val
-        when self.class then val.filter_params.presence
         when Array then val.map(&:presence)
-        when Hash then deep_cast(val)
+        when Hash then deep_cast(val).presence
         else val.presence
         end
       end.compact

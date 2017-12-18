@@ -1,0 +1,34 @@
+<h2>Patients</h2>
+
+<%= form_for @filter, url: patients_path,
+                      as: :filter,
+                      html: {method: :get} do |f| %>
+
+  <%= f.text_field :first_name %>
+  <%= f.text_field :last_name %>
+  <%= f.date_field :date_of_birth %>
+
+  <%= f.fields_for :visits do |visits_form| %>
+    <%= visits_form.date_field :date_on_or_before %>
+
+    <%= visits_form.fields_for :provider do |visits_provider_form| %>
+      <%= visits_provider_form.text_field :npi %>
+    <% end %>
+  <% end %>
+
+  <%= f.collection_select :provider_id,
+                          Provider.all,
+                          :id, :npi,
+                          { include_blank: true, include_hidden: false },
+                          multiple: true %>
+
+  <%= f.submit "Filter" %>
+<% end %>
+
+<ul>
+  <% @filter.results.each do |patient| %>
+    <li>
+      <%= patient.first_name %> <%= patient.last_name %>
+    </li>
+  <% end %>
+</ul>
