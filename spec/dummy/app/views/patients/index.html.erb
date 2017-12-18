@@ -6,14 +6,18 @@
 
   <%= f.text_field :first_name %>
   <%= f.text_field :last_name %>
-  <%= f.date_field :date_of_birth %>
+  <%= f.date_field :date_of_birth, value: @filter.date_of_birth&.to_date %>
 
-  <%= f.fields_for :visits do |visits_form| %>
-    <%= visits_form.date_field :date_on_or_before %>
+  <%= f.fields_for :visits, @filter.visits do |visits_form| %>
 
-    <%= visits_form.fields_for :provider do |visits_provider_form| %>
+    <%= visits_form.date_field :date_on_or_before, value: @filter.visits&.date_on_or_before&.to_date %>
+
+    <%= visits_form.fields_for :provider, @filter&.visits&.provider do |visits_provider_form| %>
+
       <%= visits_provider_form.text_field :npi %>
+
     <% end %>
+
   <% end %>
 
   <%= f.collection_select :provider_id,

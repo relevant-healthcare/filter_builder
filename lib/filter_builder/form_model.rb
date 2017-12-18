@@ -12,7 +12,6 @@ module FilterBuilder
     end
 
     def method_missing(method, *args)
-      bust_cache!
       attributes.send(method, *args)
     end
 

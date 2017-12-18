@@ -39,7 +39,7 @@ describe 'building a filter form', type: :feature do
     )
   end
 
-  it 'is working' do
+  it 'renders all patients by without filtering' do
     visit patients_path
     expect(page).to have_content 'Carmen San Diego'
     expect(page).to have_content 'Malcom Avalon'
@@ -52,6 +52,7 @@ describe 'building a filter form', type: :feature do
     click_button 'Filter'
     expect(page).to have_content 'Carmen San Diego'
     expect(page).not_to have_content 'Malcom Avalon'
+    expect(find_field('filter_first_name').value).to eq 'Carmen'
 
     fill_in 'filter_first_name', with: ''
     click_button 'Filter'
@@ -67,6 +68,7 @@ describe 'building a filter form', type: :feature do
     click_button 'Filter'
     expect(page).to have_content 'Carmen San Diego'
     expect(page).not_to have_content 'Malcom Avalon'
+    expect(find_field('filter_date_of_birth').value).to eq '1991-10-31'
 
     fill_in 'filter_date_of_birth', with: ''
     click_button 'Filter'
@@ -81,6 +83,7 @@ describe 'building a filter form', type: :feature do
     click_button 'Filter'
     expect(page).to have_content 'Carmen San Diego'
     expect(page).not_to have_content 'Malcom Avalon'
+    expect(find_field('filter_provider_id').value).to eq [carmen_provider.id.to_s]
 
     unselect 'dorayme', from: 'filter_provider_id'
     click_button 'Filter'
@@ -97,6 +100,8 @@ describe 'building a filter form', type: :feature do
     expect(page).to have_content 'Carmen San Diego'
     expect(page).not_to have_content 'Malcom Avalon'
 
+    expect(find_field('filter_visits_date_on_or_before').value).to eq '2017-11-25'
+
     fill_in 'filter_visits_date_on_or_before', with: ''
     click_button 'Filter'
 
@@ -111,6 +116,10 @@ describe 'building a filter form', type: :feature do
 
     expect(page).to have_content 'Carmen San Diego'
     expect(page).not_to have_content 'Malcom Avalon'
+
+    expect(find_field('filter_visits_provider_npi').value).to eq(
+      'fasolatee'
+    )
 
     fill_in 'filter_visits_provider_npi', with: ''
     click_button 'Filter'
