@@ -1,5 +1,3 @@
-require 'recursive-open-struct'
-
 module FilterBuilder
   class Filter
     attr_reader :filtered_class, :params
