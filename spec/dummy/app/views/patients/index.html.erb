@@ -6,7 +6,7 @@
 
   <%= f.text_field :first_name %>
   <%= f.text_field :last_name %>
-  <%= f.date_field :date_of_birth, value: @filter.date_of_birth.try(:to_date) %>
+  <%= f.date_field :date_of_birth, value: @filter.date_of_birth %>
 
   <%= f.fields_for :visits, @filter.visits do |visits_form| %>
 

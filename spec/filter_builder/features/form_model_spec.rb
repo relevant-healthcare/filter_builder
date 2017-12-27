@@ -11,20 +11,20 @@ describe 'building a filter form', type: :feature do
       provider: carmen_provider
     )
   end
-  let!(:carmen_visit) do
+  let(:carmen_visit) do
     Fabricate(
       :visit,
       visit_date: Date.new(2017, 11, 25),
       provider: carmen_visit_provider
     )
   end
-  let!(:carmen_provider) do
+  let(:carmen_provider) do
     Fabricate(
       :provider,
       npi: 'dorayme'
     )
   end
-  let!(:carmen_visit_provider) do
+  let(:carmen_visit_provider) do
     Fabricate(
       :provider,
       npi: 'fasolatee'
