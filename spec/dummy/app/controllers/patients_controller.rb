@@ -1,6 +1,6 @@
 class PatientsController < ApplicationController
   def index
-    @filter = FilterBuilder::FormModel.new(Patient, filter_params)
+    @filter = FilterBuilder::Form.new(Patient, filter_params)
   end
 
   private

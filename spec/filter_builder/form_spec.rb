@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'byebug'
 
-describe FilterBuilder::FormModel do
+describe FilterBuilder::Form do
   let(:form_model) { described_class.new(filtered_class, params) }
   let(:filtered_class) { Patient }
 

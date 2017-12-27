@@ -1,5 +1,5 @@
 module FilterBuilder
-  class FormModel
+  class Form
     attr_reader :filtered_class, :attributes
 
     def initialize(filtered_class, params = {})
@@ -8,7 +8,7 @@ module FilterBuilder
     end
 
     def results
-      @cache ||= filter.scope
+      filter.scope
     end
 
     def method_missing(method, *args)
@@ -20,10 +20,6 @@ module FilterBuilder
     end
 
     private
-
-    def bust_cache!
-      @cache = nil
-    end
 
     def filter
       FilterBuilder::Filter.new(filtered_class, filter_params)
