@@ -24,7 +24,7 @@ development:
   <<: *default
   database: filter_builder_development
   username: filter_builder
-  password:
+  password: filter_builder
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -33,4 +33,4 @@ test:
   <<: *default
   database: filter_builder_test
   username: filter_builder
-  password:
+  password: filter_builder

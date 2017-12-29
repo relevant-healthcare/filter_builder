@@ -1,3 +1,4 @@
 database:
   pre:
     - createuser -s filter_builder
+    - echo "ALTER ROLE filter_builder WITH PASSWORD 'filter_builder';" | psql -U postgres
