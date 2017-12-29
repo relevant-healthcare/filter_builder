@@ -1,0 +1,4 @@
+database:
+  pre:
+    - echo "CREATE ROLE filter_builder WITH UNENCRYPTED PASSWORD 'filter_builder';" | psql -U postgres
+    - echo "ALTER ROLE filter_builder CREATEDB;" | psql -U postgres

@@ -23,8 +23,8 @@ default: &default
 development:
   <<: *default
   database: filter_builder_development
-  username: postgres
-  password:
+  username: filter_builder
+  password: filter_builder
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -32,5 +32,5 @@ development:
 test:
   <<: *default
   database: filter_builder_test
-  username: postgres
-  password:
+  username: filter_builder
+  password: filter_builder
