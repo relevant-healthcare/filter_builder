@@ -2,7 +2,7 @@ module FilterBuilder
   class Filter
     attr_reader :filtered_class, :params
 
-    def initialize(filtered_class, params)
+    def initialize(filtered_class, params = {})
       @filtered_class = filtered_class
       @params = params
     end
