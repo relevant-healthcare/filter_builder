@@ -1,4 +1,3 @@
 database:
   pre:
     - createuser -s filter_builder
-    - createdb -O filter_builder filter_builder_test
