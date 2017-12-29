@@ -1,5 +1,6 @@
 database:
   pre:
+    - createdb filter_builder_test
     - echo "CREATE ROLE filter_builder WITH UNENCRYPTED PASSWORD 'filter_builder';" | psql -U postgres
     - echo "ALTER ROLE filter_builder WITH LOGIN;" | psql -U postgres
     - echo "GRANT ALL PRIVILEGES ON DATABASE filter_builder_test TO filter_builder;" | psql -U postgres
