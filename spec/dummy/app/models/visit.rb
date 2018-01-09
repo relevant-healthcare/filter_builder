@@ -12,5 +12,9 @@ class Visit < ActiveRecord::Base
     def with_date_on_or_after(date)
       where "\"#{table_name}\".\"visit_date\" >= ?", date.to_date.beginning_of_day
     end
+
+    def with_visit_sets(visit_set_params)
+      all.merge(VisitSet.find_by(visit_set_params).visits)
+    end
   end
 end

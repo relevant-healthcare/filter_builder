@@ -14,9 +14,9 @@ module FilterBuilder
           joined_class = filtered_class.reflections[key].klass
           acc.joins(key.to_sym).merge(Filter.new(joined_class, value).scope)
         elsif acc.respond_to?(key)
-          acc.public_send(key, *Array(value))
+          append_scope(acc, key, value)
         elsif acc.respond_to?("with_#{key}")
-          acc.public_send("with_#{key}", *Array(value))
+          append_scope(acc, "with_#{key}", value)
         else
           acc.where(key => value)
         end
@@ -28,6 +28,10 @@ module FilterBuilder
     def join_and_recurse?(key, value)
       filtered_class.respond_to?(:reflections) &&
         filtered_class.reflections.include?(key) && value.is_a?(Hash)
+    end
+
+    def append_scope(acc, scope_name, args)
+      acc.public_send(scope_name, *[args].flatten)
     end
   end
 end
