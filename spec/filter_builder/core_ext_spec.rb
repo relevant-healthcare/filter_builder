@@ -53,13 +53,14 @@ describe 'ActiveRecord::Base Extension' do
       let(:provider) { Fabricate :provider }
 
       let!(:excluded_patient) { Fabricate :patient }
+      let!(:provider_without_patients) { Fabricate :provider }
 
       context 'when the filter key only matches a scope when prepended by with_' do
         let(:filter_params) do
           {
             patient_relation: [
               ProviderPatientRelation.new('primary_care_giver'),
-              provider.id
+              [provider.id, provider_without_patients.id]
             ]
           }
         end

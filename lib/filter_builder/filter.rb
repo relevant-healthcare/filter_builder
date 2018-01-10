@@ -31,7 +31,7 @@ module FilterBuilder
     end
 
     def append_scope(acc, scope_name, args)
-      acc.public_send(scope_name, *[args].flatten)
+      acc.public_send(scope_name, *[args].flatten(1))
     end
   end
 end
