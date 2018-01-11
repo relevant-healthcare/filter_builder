@@ -53,13 +53,14 @@ describe 'ActiveRecord::Base Extension' do
       let(:provider) { Fabricate :provider }
 
       let!(:excluded_patient) { Fabricate :patient }
+      let!(:provider_without_patients) { Fabricate :provider }
 
       context 'when the filter key only matches a scope when prepended by with_' do
         let(:filter_params) do
           {
             patient_relation: [
               ProviderPatientRelation.new('primary_care_giver'),
-              provider.id
+              [provider.id, provider_without_patients.id]
             ]
           }
         end
@@ -118,6 +119,25 @@ describe 'ActiveRecord::Base Extension' do
           it 'includes records returned by the scope matching filter key with no prefix' do
             expect(Visit.filter(filter_params)).to contain_exactly included_visit
           end
+        end
+      end
+    end
+
+    context 'when filtering based on scopes with a hash arg' do
+      let!(:included_visit) { Fabricate :visit, uds_universe: true }
+      let!(:excluded_visit) { Fabricate :visit, uds_universe: false }
+
+      context 'when the filter key matches a scope exactly' do
+        let(:filter_params) { { with_visit_sets: { id: :uds } } }
+        it 'passes the hash argument correctly, returning scoped results' do
+          expect(Visit.filter(filter_params)).to contain_exactly included_visit
+        end
+      end
+
+      context 'when the filter key only matches a scope prepended by with_' do
+        let(:filter_params) { { visit_sets: { id: :uds } } }
+        it 'passes the hash argument correctly, returning scoped results' do
+          expect(Visit.filter(filter_params)).to contain_exactly included_visit
         end
       end
     end
