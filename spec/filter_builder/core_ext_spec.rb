@@ -90,7 +90,7 @@ describe 'ActiveRecord::Base Extension' do
       let!(:included_visit) { Fabricate :visit, visit_date: '2017-01-01' }
       let!(:excluded_visit) { Fabricate :visit, visit_date: '2016-01-01' }
 
-      context 'when the invidual argument is provided as an array' do
+      context 'when the individual argument is provided as an array' do
         context 'when the filter key only matches a scope when prepended by with_' do
           let(:filter_params) { { date_on_or_after: ['2016-06-01'] } }
           it 'includes records returned by the scope matching filter key prepended by with_' do
