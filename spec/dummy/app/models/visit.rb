@@ -1,6 +1,9 @@
 class Visit < ActiveRecord::Base
+  extend ActiveHash::Associations::ActiveRecordExtensions
+
   belongs_to :patient
   belongs_to :provider
+  belongs_to_active_hash :visit_type
 
   scope :uds_universe, -> { where(uds_universe: true) }
 
@@ -15,6 +18,10 @@ class Visit < ActiveRecord::Base
 
     def with_visit_sets(visit_set_params)
       all.merge(VisitSet.find_by(visit_set_params).visits)
+    end
+
+    def with_visit_type(visit_type_params)
+      where(visit_type_id: visit_type_params[:id])
     end
   end
 end

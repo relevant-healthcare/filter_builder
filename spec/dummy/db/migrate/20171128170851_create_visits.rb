@@ -5,6 +5,7 @@ class CreateVisits < ActiveRecord::Migration
       t.boolean :uds_universe
       t.references :patient, index: true
       t.references :provider, index: true
+      t.references :visit_type, index: true
 
       t.timestamps null: false
     end

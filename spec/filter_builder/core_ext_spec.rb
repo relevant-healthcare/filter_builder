@@ -37,6 +37,17 @@ describe 'ActiveRecord::Base Extension' do
       end
     end
 
+    context 'when filtering based on active hash associations' do
+      let(:included_visit) { Fabricate :visit, visit_type: VisitType::MEDICAL }
+      let(:excluded_visit) { Fabricate :visit, visit_type: VisitType::DENTAL }
+
+      let(:filter_params) { { visit_type: { id: VisitType::MEDICAL.id } } }
+
+      it 'includes records with the specified fields in their joined relationships' do
+        expect(Visit.filter(filter_params)).to contain_exactly included_visit
+      end
+    end
+
     context 'when filtering based on scopes with no args' do
       let!(:included_visit) { Fabricate :visit, uds_universe: true }
       let!(:excluded_visit) { Fabricate :visit, uds_universe: false }

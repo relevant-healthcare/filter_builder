@@ -38,11 +38,13 @@ ActiveRecord::Schema.define(version: 20171128170851) do
     t.boolean  "uds_universe"
     t.integer  "patient_id"
     t.integer  "provider_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "visit_type_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "visits", ["patient_id"], name: "index_visits_on_patient_id", using: :btree
   add_index "visits", ["provider_id"], name: "index_visits_on_provider_id", using: :btree
+  add_index "visits", ["visit_type_id"], name: "index_visits_on_visit_type_id", using: :btree
 
 end

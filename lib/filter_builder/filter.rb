@@ -26,8 +26,10 @@ module FilterBuilder
     private
 
     def join_and_recurse?(key, value)
-      filtered_class.respond_to?(:reflections) &&
-        filtered_class.reflections.include?(key) && value.is_a?(Hash)
+      unless filtered_class.respond_to?(:reflections) && value.is_a?(Hash)
+        return false
+      end
+      filtered_class.reflections[key].try(:klass).try(:table_name).present?
     end
 
     def append_scope(acc, scope_name, args)
