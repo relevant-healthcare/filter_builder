@@ -13,5 +13,5 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'active_hash', '~> 1.4.1', group: %i[development test]
+gem 'active_hash', '~> 1.4.1', group: :test
 gem 'fabrication', group: :test
