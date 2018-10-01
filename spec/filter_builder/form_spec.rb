@@ -22,8 +22,19 @@ describe FilterBuilder::Form do
 
     let(:results) { form_model.results }
 
-    context 'when passing params on initialize' do
+    context 'when passing hash params on initialize' do
       let(:params) { { provider: { npi: 'included' } } }
+
+      it 'builds a scope with these params' do
+        expect(results).to contain_exactly included_patient
+      end
+    end
+
+    context 'when passing params on initialize' do
+      let(:params) do
+        ActionController::Parameters.new(provider: { npi: 'included' })
+                                    .permit(provider: :npi)
+      end
 
       it 'builds a scope with these params' do
         expect(results).to contain_exactly included_patient
