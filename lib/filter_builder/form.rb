@@ -4,7 +4,7 @@ module FilterBuilder
 
     def initialize(filtered_class, params = {})
       @filtered_class = filtered_class
-      @attributes = RecursiveOpenStruct.new(params)
+      @attributes = RecursiveOpenStruct.new(params.to_h)
     end
 
     def results
