@@ -30,7 +30,7 @@ describe FilterBuilder::Form do
       end
     end
 
-    context 'when passing params on initialize' do
+    context 'when passing action controller params on initialize' do
       let(:params) do
         ActionController::Parameters.new(provider: { npi: 'included' })
                                     .permit(provider: :npi)
