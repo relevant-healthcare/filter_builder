@@ -9,6 +9,7 @@ describe FilterBuilder::Form do
     let!(:included_patient) do
       Fabricate(
         :patient,
+        first_name: 'Jill',
         provider: Fabricate(:provider, npi: 'included')
       )
     end
@@ -32,11 +33,11 @@ describe FilterBuilder::Form do
 
     context 'when passing action controller params on initialize' do
       let(:params) do
-        ActionController::Parameters.new(provider: { npi: 'included' })
+        ActionController::Parameters.new(first_name: 'NotJill', provider: { npi: 'included' })
                                     .permit(provider: :npi)
       end
 
-      it 'builds a scope with these params' do
+      it 'builds a scope with the permitted params' do
         expect(results).to contain_exactly included_patient
       end
     end
