@@ -4,7 +4,7 @@ module FilterBuilder
 
     def initialize(filtered_class, params = {})
       @filtered_class = filtered_class
-      @params = params
+      @params = params.to_h
     end
 
     def scope

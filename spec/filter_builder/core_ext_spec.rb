@@ -141,5 +141,18 @@ describe 'ActiveRecord::Base Extension' do
         end
       end
     end
+
+    context 'when filtering with params that respond to #to_h' do
+      let!(:included_visit) { Fabricate :visit, uds_universe: true }
+      let!(:excluded_visit) { Fabricate :visit, uds_universe: false }
+
+      let(:filter_params) do
+        double('hash_like_obj', to_h: { with_visit_sets: { id: :uds } })
+      end
+
+      it 'still filters' do
+        expect(Visit.filter(filter_params)).to contain_exactly included_visit
+      end
+    end
   end
 end
