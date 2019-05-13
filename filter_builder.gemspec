@@ -16,10 +16,13 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
+  s.add_dependency "rails", ">= 4.2.7", "< 5.3"
+
   s.add_dependency "recursive-open-struct"
-  s.add_development_dependency "rails", "~> 4.2.8"
   s.add_development_dependency "pg"
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "capybara"
   s.add_development_dependency "byebug"
+  s.add_development_dependency "appraisal"
+  s.add_development_dependency "rspec_junit_formatter"
 end
