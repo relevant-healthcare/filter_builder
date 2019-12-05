@@ -58,25 +58,31 @@ end
 
 #### Use cases:
 
-Filtering by column:
+**Filtering by column**:
+
 `Patient.filter(first_name: 'My Name')` is equivalent to `Patient.where(first_name: 'My Name')`
 
-Filtering by a belongs_to association:
+**Filtering by a belongs_to association**:
+
 `Patient.filter(provider: { npi: 'some_npi' })` is equivalent to `Patient.joins(:provider).merge(Provider.where(npi: some_npi))`
 
-Filtering by a scope with an argument:
+**Filtering by a scope with an argument**:
+
 `Patient.filter(born_after: 5.year.ago)` is equivalent to `Patient.born_after(5.years.ago)`
 
-Filtering by a scope without an argument:
+**Filtering by a scope without an argument**:
+
 `Provider.filter(missing_npi: [])` is equivalent to `Provider.missing_npi`
 
-Filtering by a scope prefixed by "with":
+**Filtering by a scope prefixed by "with"**:
+
 `Provider.filter(age: 28)` is equivalent to `Provider.with_age(28`
 
-Filtering using operator keywords:
+**Filtering using operator keywords**:
+
 Example: `Patient.filter(first_name: { matches_case_insensitive: 'Lars' })` is equivalent to `Patient.where("patients.first_name ~* 'Larse'")`
 
-Supported operator keywors:
+Supported operator keywords:
 - `matches_case_insensitive:` => `~*`
 - `matches_case_sensitive:` => `~`
 
