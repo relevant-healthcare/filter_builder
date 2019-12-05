@@ -159,12 +159,22 @@ describe 'ActiveRecord::Base Extension' do
       let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
       let!(:excluded_provider) { Fabricate(:provider, npi: '4AC') }
 
-      context 'one operator' do
+      context 'without regular expressions' do
         let(:filter_params) do
           { npi: { matches_case_insensitive: '3a' } }
         end
 
-        it 'includes results with matching values' do
+        it 'includes results where the field contains the value' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'with regular expressions' do
+        let(:filter_params) do
+          { npi: { matches_case_insensitive: '^3.*$' } }
+        end
+
+        it 'includes results where the field matches the reglar expression' do
           expect(Provider.filter(filter_params)).to contain_exactly included_provider
         end
       end
