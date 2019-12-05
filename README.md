@@ -6,6 +6,7 @@ Filter Builder implements `.filter` on ActiveRecord::Base, making `.filter` avai
 
 ### `.filter`
 required argument: Hash
+
 returned value: ActiveRecord_Relation
 
 #### Example use cases:
@@ -53,7 +54,9 @@ class Provider < ApplicationRecord
     where(npi: nil)
   end
 end
-``
+```
+
+#### Use cases:
 
 Filtering by column:
 `Patient.filter(first_name: 'My Name')` is equivalent to `Patient.where(first_name: 'My Name')`
