@@ -56,8 +56,6 @@ class Provider < ApplicationRecord
 end
 ```
 
-#### Use cases:
-
 **Filtering by column**:
 
 `Patient.filter(first_name: 'My Name')` is equivalent to `Patient.where(first_name: 'My Name')`
@@ -66,17 +64,17 @@ end
 
 `Patient.filter(provider: { npi: 'some_npi' })` is equivalent to `Patient.joins(:provider).merge(Provider.where(npi: some_npi))`
 
-**Filtering by a scope with an argument**:
+**Filtering by a scope**:
 
 `Patient.filter(born_after: 5.year.ago)` is equivalent to `Patient.born_after(5.years.ago)`
 
-**Filtering by a scope without an argument**:
-
-`Provider.filter(missing_npi: [])` is equivalent to `Provider.missing_npi`
-
-**Filtering by a scope prefixed by "with"**:
+Filter Builder will look for scopes that match the keyword prefix with "with". For example:
 
 `Provider.filter(age: 28)` is equivalent to `Provider.with_age(28`
+
+By passing an empty hash as the argument, it's possible to call a scope without an argument. For example:
+
+`Provider.filter(missing_npi: [])` is equivalent to `Provider.missing_npi`
 
 **Filtering using operator keywords**:
 
