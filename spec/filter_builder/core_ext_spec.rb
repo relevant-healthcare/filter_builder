@@ -174,7 +174,7 @@ describe 'ActiveRecord::Base Extension' do
           { npi: { matches_case_insensitive: '^3.*$' } }
         end
 
-        it 'includes results where the field matches the reglar expression' do
+        it 'includes results where the field matches the regular expression' do
           expect(Provider.filter(filter_params)).to contain_exactly included_provider
         end
       end
