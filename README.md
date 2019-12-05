@@ -1,5 +1,7 @@
 # FilterBuilder
 
+FilterBuilder is used to dynamically filter an ActiveRecord model based on a hash-like data structure, for example when filtering an API response based on user-selected filter params.
+
 ## API
 
 Filter Builder implements `.filter` on ActiveRecord::Base, making `.filter` available on any child of ActiveRecord::Base.
@@ -9,7 +11,7 @@ required argument: Hash
 
 returned value: ActiveRecord_Relation
 
-#### Example use cases:
+#### Example method calls:
 
 Given the schema:
 ```
