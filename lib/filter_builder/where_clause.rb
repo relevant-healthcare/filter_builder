@@ -10,12 +10,10 @@ module FilterBuilder
     end
 
     def predicate
-      return { field => value } if operator.nil?
       case operator
-      when :matches_case_insensitive
-        then ["#{namespaced_field} ~* ?", value]
-      when :matches_case_sensitive
-        then ["#{namespaced_field} ~ ?", value]
+      when nil then { field => value }
+      when :matches_case_insensitive then ["#{namespaced_field} ~* ?", value]
+      when :matches_case_sensitive then ["#{namespaced_field} ~ ?", value]
       else
         raise "Unsupported operator: #{operator}"
       end
