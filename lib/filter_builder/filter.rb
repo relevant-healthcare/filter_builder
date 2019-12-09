@@ -18,10 +18,10 @@ module FilterBuilder
         elsif acc.respond_to?("with_#{key}")
           append_scope(acc, "with_#{key}", value)
         else
-          WhereChain.new(
-            field: key,
-            condition: value,
-            filtered_table: filtered_class.table_name
+          WhereChain.from_filter_params(
+            filtered_table: filtered_class.table_name,
+            key: key,
+            value: value
           ).append_to(acc)
         end
       end

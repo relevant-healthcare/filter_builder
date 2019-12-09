@@ -9,6 +9,12 @@ module FilterBuilder
       @filtered_table = filtered_table
     end
 
+    def append_to(scope)
+      scope.where(predicate)
+    end
+
+    private
+
     def predicate
       case operator
       when nil then { field => value }
@@ -18,8 +24,6 @@ module FilterBuilder
         raise "Unsupported operator: #{operator}"
       end
     end
-
-    private
 
     def namespaced_field
       "\"#{filtered_table}\".\"#{field}\""
