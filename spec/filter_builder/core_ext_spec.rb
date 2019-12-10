@@ -154,5 +154,55 @@ describe 'ActiveRecord::Base Extension' do
         expect(Visit.filter(filter_params)).to contain_exactly included_visit
       end
     end
+
+    context 'when filtering with an operator' do
+      let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
+      let!(:excluded_provider) { Fabricate(:provider, npi: '4AC') }
+
+      context 'without regular expressions' do
+        let(:filter_params) do
+          { npi: { matches_case_insensitive: '3a' } }
+        end
+
+        it 'includes results where the field contains the value' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'with regular expressions' do
+        let(:filter_params) do
+          { npi: { matches_case_insensitive: '^3.*$' } }
+        end
+
+        it 'includes results where the field matches the regular expression' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'two operators filtering the same field' do
+        let!(:other_excluded_provider) { Fabricate(:provider, npi: '3ac') }
+
+        let(:filter_params) do
+          { npi: { matches_case_insensitive: '3A', matches_case_sensitive: 'AC' } }
+        end
+
+        it 'includes results with matching values' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'filtering a field that is shared by the base table and the joined table' do
+        let!(:patient) { Fabricate(:patient, provider: included_provider, first_name: 'Sam') }
+
+        let(:filter_params) do
+          # patients and providers both have a first_name column
+          { patients: { first_name: { matches_case_insensitive: 'sa' } } }
+        end
+
+        it 'refers to the filtered column unambiguously' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+    end
   end
 end
