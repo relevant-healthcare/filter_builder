@@ -9,7 +9,7 @@ module FilterBuilder
       @filtered_table = filtered_table
     end
 
-    def append_to(scope)
+    def append_to_scope(scope)
       scope.where(predicate)
     end
 

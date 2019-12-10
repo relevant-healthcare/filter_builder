@@ -37,8 +37,8 @@ module FilterBuilder
       @clauses = clauses
     end
 
-    def append_to(scope)
-      clauses.reduce(scope) { |acc, clause| clause.append_to(acc) }
+    def append_to_scope(scope)
+      clauses.reduce(scope) { |acc, clause| clause.append_to_scope(acc) }
     end
 
     private
