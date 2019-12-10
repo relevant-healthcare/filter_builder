@@ -33,8 +33,6 @@ module FilterBuilder
       )
     end
 
-    attr_reader :field, :clauses, :filtered_table
-
     def initialize(clauses:)
       @clauses = clauses
     end
@@ -42,5 +40,8 @@ module FilterBuilder
     def append_to(scope)
       clauses.reduce(scope) { |acc, clause| clause.append_to(acc) }
     end
+
+    private
+    attr_reader :clauses
   end
 end
