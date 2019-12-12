@@ -2,14 +2,14 @@ module FilterBuilder
   class Form
     attr_reader :filtered_class, :attributes, :options
 
-    def initialize(filtered_class, params = {}, options = { require_filter: false })
+    def initialize(filtered_class, params = {}, options = { require_params: false })
       @filtered_class = filtered_class
       @attributes = RecursiveOpenStruct.new(params.to_h)
       @options = options
     end
 
     def results
-      return filtered_class.none if options[:require_filter] && !filter_params_present?
+      return filtered_class.none if options[:require_params] && !filter_params_present?
 
       filter.scope
     end

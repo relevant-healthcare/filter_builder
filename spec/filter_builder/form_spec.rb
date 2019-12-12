@@ -42,8 +42,8 @@ describe FilterBuilder::Form do
       end
     end
 
-    context 'when require_filter is set to true' do
-      let(:form_model) { described_class.new(filtered_class, params, require_filter: true) }
+    context 'when require_params is set to true' do
+      let(:form_model) { described_class.new(filtered_class, params, require_params: true) }
 
       context 'when params are present' do
         let(:params) { { provider: { npi: 'included' } } }
