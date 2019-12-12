@@ -1,13 +1,16 @@
 module FilterBuilder
   class Form
-    attr_reader :filtered_class, :attributes
+    attr_reader :filtered_class, :attributes, :require_filter
 
-    def initialize(filtered_class, params = {})
+    def initialize(filtered_class, params = {}, require_filter = false)
       @filtered_class = filtered_class
       @attributes = RecursiveOpenStruct.new(params.to_h)
+      @require_filter = require_filter
     end
 
     def results
+      return filtered_class.none if require_filter && !filter_params_present?
+
       filter.scope
     end
 
@@ -17,6 +20,10 @@ module FilterBuilder
 
     def filter_params
       deep_cast(attributes)
+    end
+
+    def filter_params_present?
+      filter_params.any?
     end
 
     private
