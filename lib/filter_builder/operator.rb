@@ -6,7 +6,7 @@ module FilterBuilder
     end
 
     def self.predicate_class(keyword)
-      "FilterBuilder::Operator::#{keyword.to_s.camelcase}Predicate".constantize
+      "FilterBuilder::#{keyword.to_s.camelcase}Predicate".constantize
     rescue NameError
       raise UnsupportedOperatorKeywordError.new("Unsupported keyword: #{keyword}")
     end
@@ -20,29 +20,29 @@ module FilterBuilder
     private
 
     attr_reader :predicate
-
-    class EqualsPredicate
-      def condition_for(field, value)
-        { field.name => value }
-      end
-    end
-
-    class MatchesCaseInsensitivePredicate
-      def condition_for(field, value)
-        ["#{field.namespaced} ~* ?", value]
-      end
-    end
-
-    class MatchesCaseSensitivePredicate
-      def condition_for(field, value)
-        ["#{field.namespaced} ~ ?", value]
-      end
-    end
   end
 
   class NilOperator
     def condition_for(field, value)
       { field.name => value }
+    end
+  end
+
+  class EqualsPredicate
+    def condition_for(field, value)
+      { field.name => value }
+    end
+  end
+
+  class MatchesCaseInsensitivePredicate
+    def condition_for(field, value)
+      ["#{field.namespaced} ~* ?", value]
+    end
+  end
+
+  class MatchesCaseSensitivePredicate
+    def condition_for(field, value)
+      ["#{field.namespaced} ~ ?", value]
     end
   end
 
