@@ -86,6 +86,26 @@ Supported operator keywords:
 - `matches_case_insensitive:` => `~*`
 - `matches_case_sensitive:` => `~`
 
+## FilterBuilder::Form
+
+This class handles cleaning up filter parameters (i.e. from a filter form request).
+The class should be initialized with the following arguments:
+* `filtered_class`: scope to be filtered
+* `params`: form param hash to be cleaned up and then passed into the filter
+* `config`: config options hash
+  * `require_params`: set to `true` to return an empty scope when no `params` are specified
+
+### `#results`
+Returns a scope of the results of filtering `filtered_class` with cleaned up `params`
+
+### `#filter_params_present?`
+Returns a boolean indicating if passed in `params` specified any filters
+
+Examples:
+* `FilterBuilder::Form.new(filtered_class, { name: 'Bob' }).filter_params_present? = true`
+* `FilterBuilder::Form.new(filtered_class, { name: '' }).filter_params_present? = false`
+* `FilterBuilder::Form.new(filtered_class, { }).filter_params_present? = false`
+
 ## Local Setup
 
 - Clone repo
