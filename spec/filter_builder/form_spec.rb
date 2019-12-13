@@ -42,22 +42,54 @@ describe FilterBuilder::Form do
       end
     end
 
+    context 'when no params are provided' do
+      let(:params) { {} }
+
+      it 'returns the passed in scope' do
+        expect(results).to contain_exactly(included_patient, excluded_patient)
+      end
+    end
+
     context 'when require_params is set to true' do
-      let(:form_model) { described_class.new(filtered_class, params, require_params: true) }
+      let(:form_model) { described_class.new(filtered_class, params, require_params: require_params) }
 
-      context 'when params are present' do
-        let(:params) { { provider: { npi: 'included' } } }
+      context 'is set to true' do
+        let(:require_params) { true }
 
-        it 'builds a scope with these params' do
-          expect(results).to contain_exactly included_patient
+        context 'when params are present' do
+          let(:params) { { provider: { npi: 'included' } } }
+
+          it 'builds a scope with these params' do
+            expect(results).to contain_exactly included_patient
+          end
+        end
+
+        context 'when params are empty' do
+          let(:params) { {} }
+
+          it 'builds an empty scope' do
+            expect(results).to be_empty
+          end
         end
       end
 
-      context 'when params are empty' do
-        let(:params) { {} }
+      context 'is set to false' do
+        let(:require_params) { false }
 
-        it 'builds an empty scope' do
-          expect(results).to be_empty
+        context 'when params are present' do
+          let(:params) { { provider: { npi: 'included' } } }
+
+          it 'builds a scope with these params' do
+            expect(results).to contain_exactly included_patient
+          end
+        end
+
+        context 'when params are empty' do
+          let(:params) { {} }
+
+          it 'returns the passed in scope' do
+            expect(results).to contain_exactly(included_patient, excluded_patient)
+          end
         end
       end
     end
