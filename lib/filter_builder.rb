@@ -1,5 +1,7 @@
 require 'recursive-open-struct'
 
+require 'filter_builder/field'
+require 'filter_builder/operator'
 require 'filter_builder/where_clause'
 require 'filter_builder/where_chain'
 require 'filter_builder/filter'

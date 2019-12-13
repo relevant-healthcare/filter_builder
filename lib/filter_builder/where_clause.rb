@@ -1,12 +1,11 @@
 module FilterBuilder
   class WhereClause
-    attr_reader :field, :value, :operator, :filtered_table
+    attr_reader :field, :value, :operator
 
-    def initialize(field:, value:, filtered_table:, operator: nil)
+    def initialize(field:, value:, operator: NilOperator.new)
       @field = field
       @value = value
       @operator = operator
-      @filtered_table = filtered_table
     end
 
     def filter(scope)
@@ -16,17 +15,7 @@ module FilterBuilder
     private
 
     def predicate
-      case operator
-      when nil, :equals then { field => value }
-      when :matches_case_insensitive then ["#{namespaced_field} ~* ?", value]
-      when :matches_case_sensitive then ["#{namespaced_field} ~ ?", value]
-      else
-        raise "Unsupported operator: #{operator}"
-      end
-    end
-
-    def namespaced_field
-      "\"#{filtered_table}\".\"#{field}\""
+      operator.predicate_for(field, value)
     end
   end
 end
