@@ -1,25 +1,50 @@
 module FilterBuilder
   class Operator
-    def initialize(keyword = nil)
-      @keyword = keyword
+    def self.from_keyword(keyword)
+      predicate = predicate_class(keyword).new
+      new(predicate)
     end
 
-    def predicate_for(field, value)
-      case keyword
-      when :equals then { field.name => value }
-      when :matches_case_insensitive then ["#{field.namespaced} ~* ?", value]
-      when :matches_case_sensitive then ["#{field.namespaced} ~ ?", value]
-      end
+    def self.predicate_class(keyword)
+      "FilterBuilder::Operator::#{keyword.to_s.camelcase}Predicate".constantize
+    rescue NameError
+      raise UnsupportedOperatorKeywordError.new("Unsupported keyword: #{keyword}")
     end
+
+    def initialize(predicate)
+      @predicate = predicate
+    end
+
+    delegate :condition_for, to: :predicate
 
     private
 
-    attr_reader :keyword
+    attr_reader :predicate
+
+    class EqualsPredicate
+      def condition_for(field, value)
+        { field.name => value }
+      end
+    end
+
+    class MatchesCaseInsensitivePredicate
+      def condition_for(field, value)
+        ["#{field.namespaced} ~* ?", value]
+      end
+    end
+
+    class MatchesCaseSensitivePredicate
+      def condition_for(field, value)
+        ["#{field.namespaced} ~ ?", value]
+      end
+    end
   end
 
   class NilOperator
-    def predicate_for(field, value)
+    def condition_for(field, value)
       { field.name => value }
     end
   end
+
+  class UnsupportedOperatorKeywordError < StandardError; end
 end

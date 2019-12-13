@@ -225,5 +225,13 @@ describe 'ActiveRecord::Base Extension' do
         end
       end
     end
+
+    context 'with an unsupported operator keyword' do
+      it 'raises the expected error' do
+        expect do
+          Provider.filter(npi: { unsupported: 'foo'})
+        end.to raise_error FilterBuilder::UnsupportedOperatorKeywordError
+      end
+    end
   end
 end

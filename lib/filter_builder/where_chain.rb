@@ -3,26 +3,30 @@ module FilterBuilder
     def self.from_filter_params(key:, value:, filtered_table:)
       field = Field.new(name: key, namespace: filtered_table)
       if value.is_a?(Hash)
-        from_hash_condition(value, field: field)
+        from_predicate_key_values(value, field)
       else
-        from_value(value, field: field)
+        from_single_field_value(value, field)
       end
     end
 
-    def self.from_hash_condition(hash_condition, field:)
+    def self.from_predicate_key_values(predicate_key_values, field)
       new(
-        clauses: hash_condition.map do |operator_keyword, value|
+        clauses: predicate_key_values.map do |operator_keyword, value|
           WhereClause.new(
             field: field,
             value: value,
-            operator: Operator.new(operator_keyword)
+            operator: Operator.from_keyword(operator_keyword)
           )
         end
       )
     end
 
-    def self.from_value(value, field:)
-      new(clauses: [WhereClause.new(field: field, value: value)])
+    def self.from_single_field_value(value, field)
+      new(
+        clauses: [
+          WhereClause.new(field: field, value: value, operator: NilOperator.new)
+        ]
+      )
     end
 
     def initialize(clauses:)
