@@ -17,7 +17,7 @@ module FilterBuilder
 
     def predicate
       case operator
-      when nil then { field => value }
+      when nil, :equals then { field => value }
       when :matches_case_insensitive then ["#{namespaced_field} ~* ?", value]
       when :matches_case_sensitive then ["#{namespaced_field} ~ ?", value]
       else

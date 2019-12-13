@@ -42,6 +42,7 @@ module FilterBuilder
     end
 
     private
+
     attr_reader :clauses
   end
 end

@@ -155,7 +155,7 @@ describe 'ActiveRecord::Base Extension' do
       end
     end
 
-    context 'when filtering with an operator' do
+    context 'when filtering with an operator keyword' do
       let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
       let!(:excluded_provider) { Fabricate(:provider, npi: '4AC') }
 
@@ -202,6 +202,15 @@ describe 'ActiveRecord::Base Extension' do
         it 'refers to the filtered column unambiguously' do
           expect(Provider.filter(filter_params)).to contain_exactly included_provider
         end
+      end
+    end
+
+    context 'with equals operator keyword' do
+      let!(:included_provider) { Fabricate(:provider, npi: 'AC') }
+      let!(:excluded_provider) { Fabricate(:provider, npi: '3AC') }
+
+      it 'filters with equality' do
+        expect(Provider.filter(npi: { equals: 'AC' })).to contain_exactly included_provider
       end
     end
   end
