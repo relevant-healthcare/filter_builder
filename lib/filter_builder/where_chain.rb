@@ -15,7 +15,7 @@ module FilterBuilder
           WhereClause.new(
             field: field,
             value: value,
-            operator: Operator.from_keyword(operator_keyword)
+            operator: OperatorFactory.from_keyword(operator_keyword)
           )
         end
       )
