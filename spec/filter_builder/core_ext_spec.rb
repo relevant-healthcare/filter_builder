@@ -209,8 +209,20 @@ describe 'ActiveRecord::Base Extension' do
       let!(:included_provider) { Fabricate(:provider, npi: 'AC') }
       let!(:excluded_provider) { Fabricate(:provider, npi: '3AC') }
 
-      it 'filters with equality' do
-        expect(Provider.filter(npi: { equals: 'AC' })).to contain_exactly included_provider
+      context 'filtering to a scalar' do
+        it 'includes records with an equal value' do
+          expect(Provider.filter(npi: { equals: 'AC' })).to contain_exactly included_provider
+        end
+      end
+
+      context 'filtering to a collection' do
+        let!(:other_included_provider) { Fabricate(:provider, npi: 'DC') }
+
+        it 'includes records with a value in the collection' do
+          expect(Provider.filter(npi: { equals: %w[AC DC] })).to contain_exactly(
+            included_provider, other_included_provider
+          )
+        end
       end
     end
   end
