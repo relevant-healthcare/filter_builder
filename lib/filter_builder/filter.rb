@@ -13,9 +13,9 @@ module FilterBuilder
         if join_and_recurse?(key, value)
           joined_class = filtered_class.reflections[key].klass
           acc.joins(key.to_sym).merge(Filter.new(joined_class, value).scope)
-        elsif acc.respond_to?(key)
+        elsif uninherited_method_defined?(acc, key.to_sym)
           append_scope(acc, key, value)
-        elsif acc.respond_to?("with_#{key}")
+        elsif uninherited_method_defined?(acc, "with_#{key}".to_sym)
           append_scope(acc, "with_#{key}", value)
         else
           WhereChain.from_filter_params(
@@ -28,6 +28,10 @@ module FilterBuilder
     end
 
     private
+
+    def uninherited_method_defined?(relation, method_name)
+      relation.model.public_methods(false).include?(method_name)
+    end
 
     def join_and_recurse?(key, value)
       filtered_class.respond_to?(:reflections) &&

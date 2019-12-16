@@ -142,6 +142,17 @@ describe 'ActiveRecord::Base Extension' do
       end
     end
 
+    context 'when filtering on a column that is also an inherited class method' do
+      let!(:included_health_center) { Fabricate :health_center, name: 'foo' }
+      let!(:excluded_health_center) { Fabricate :health_center, name: 'bar' }
+
+      let(:filter_params) { { name: 'foo' } } # HealthCenter inherits `.name` from ActiveRecord::Base
+
+      it 'filters on the column and does not call the class method' do
+        expect(HealthCenter.filter(filter_params)).to contain_exactly included_health_center
+      end
+    end
+
     context 'when filtering with params that respond to #to_h' do
       let!(:included_visit) { Fabricate :visit, uds_universe: true }
       let!(:excluded_visit) { Fabricate :visit, uds_universe: false }
