@@ -1,5 +1,5 @@
 module FilterBuilder
-  class NilOperator
+  class DefaultOperator
     def condition_for(field, value)
       { field.name => value }
     end

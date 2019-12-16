@@ -24,7 +24,7 @@ module FilterBuilder
     def self.from_single_field_value(value, field)
       new(
         clauses: [
-          WhereClause.new(field: field, value: value, operator: NilOperator.new)
+          WhereClause.new(field: field, value: value, operator: DefaultOperator.new)
         ]
       )
     end
