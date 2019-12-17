@@ -9,13 +9,7 @@ module FilterBuilder
     end
 
     def filter(scope)
-      scope.where(condition)
-    end
-
-    private
-
-    def condition
-      operator.condition_for(field, value)
+      operator.condition_for(scope, field, value)
     end
   end
 end
