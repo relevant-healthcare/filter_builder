@@ -1,34 +1,30 @@
 module FilterBuilder
   class WhereChain
     def self.from_filter_params(key:, value:, filtered_table:)
+      field = Field.new(name: key, namespace: filtered_table)
       if value.is_a?(Hash)
-        from_hash_condition(value, field: key, filtered_table: filtered_table)
+        from_predicate_key_values(value, field)
       else
-        from_value(value, field: key, filtered_table: filtered_table)
+        from_single_field_value(value, field)
       end
     end
 
-    def self.from_hash_condition(hash_condition, field:, filtered_table:)
+    def self.from_predicate_key_values(predicate_key_values, field)
       new(
-        clauses: hash_condition.map do |operator, value|
+        clauses: predicate_key_values.map do |operator_keyword, value|
           WhereClause.new(
             field: field,
             value: value,
-            operator: operator,
-            filtered_table: filtered_table
+            operator: OperatorFactory.from_keyword(operator_keyword)
           )
         end
       )
     end
 
-    def self.from_value(value, field:, filtered_table:)
+    def self.from_single_field_value(value, field)
       new(
         clauses: [
-          WhereClause.new(
-            field: field,
-            value: value,
-            filtered_table: filtered_table
-          )
+          WhereClause.new(field: field, value: value, operator: DefaultOperator.new)
         ]
       )
     end
@@ -42,6 +38,7 @@ module FilterBuilder
     end
 
     private
+
     attr_reader :clauses
   end
 end

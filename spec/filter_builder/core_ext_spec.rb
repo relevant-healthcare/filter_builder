@@ -155,7 +155,7 @@ describe 'ActiveRecord::Base Extension' do
       end
     end
 
-    context 'when filtering with an operator' do
+    context 'when filtering with an operator keyword' do
       let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
       let!(:excluded_provider) { Fabricate(:provider, npi: '4AC') }
 
@@ -202,6 +202,35 @@ describe 'ActiveRecord::Base Extension' do
         it 'refers to the filtered column unambiguously' do
           expect(Provider.filter(filter_params)).to contain_exactly included_provider
         end
+      end
+    end
+
+    context 'with equals operator keyword' do
+      let!(:included_provider) { Fabricate(:provider, npi: 'AC') }
+      let!(:excluded_provider) { Fabricate(:provider, npi: '3AC') }
+
+      context 'filtering to a scalar' do
+        it 'includes records with an equal value' do
+          expect(Provider.filter(npi: { equals: 'AC' })).to contain_exactly included_provider
+        end
+      end
+
+      context 'filtering to a collection' do
+        let!(:other_included_provider) { Fabricate(:provider, npi: 'DC') }
+
+        it 'includes records with a value in the collection' do
+          expect(Provider.filter(npi: { equals: %w[AC DC] })).to contain_exactly(
+            included_provider, other_included_provider
+          )
+        end
+      end
+    end
+
+    context 'with an unsupported operator keyword' do
+      it 'raises the expected error' do
+        expect do
+          Provider.filter(npi: { unsupported: 'foo'})
+        end.to raise_error FilterBuilder::UnsupportedOperatorKeywordError
       end
     end
   end
