@@ -5,7 +5,7 @@ module FilterBuilder
     end
 
     def self.condition_class(operator_keyword)
-      "FilterBuilder::Condition::#{operator_keyword.to_s.camelcase}".constantize
+      "FilterBuilder::Conditions::#{operator_keyword.to_s.camelcase}".constantize
     rescue NameError
       raise UnsupportedOperatorKeywordError.new("Unsupported keyword: #{operator_keyword}")
     end

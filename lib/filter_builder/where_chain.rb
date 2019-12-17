@@ -22,7 +22,7 @@ module FilterBuilder
     end
 
     def self.from_single_field_value(value, field)
-      new(conditions: [Condition::Default.new(field: field, value: value)])
+      new(conditions: [Conditions::Equals.new(field: field, value: value)])
     end
 
     def initialize(conditions:)
