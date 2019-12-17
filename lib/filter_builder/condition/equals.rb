@@ -1,7 +1,7 @@
 module FilterBuilder
-  module Operator
-    class Equals
-      def condition_for(scope, field, value)
+  module Condition
+    class Equals < Base
+      def filter(scope)
         scope.where(field.name => value)
       end
     end

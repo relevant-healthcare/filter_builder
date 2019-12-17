@@ -1,7 +1,7 @@
 module FilterBuilder
-  module Operator
-    class Default
-      def condition_for(scope, field, value)
+  module Condition
+    class Default < Base
+      def filter(scope)
         scope.where(field.name => value)
       end
     end

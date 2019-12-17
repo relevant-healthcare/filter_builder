@@ -3,42 +3,38 @@ module FilterBuilder
     def self.from_filter_params(key:, value:, filtered_table:)
       field = Field.new(name: key, namespace: filtered_table)
       if value.is_a?(Hash)
-        from_predicate_key_values(value, field)
+        from_condition_key_values(value, field)
       else
         from_single_field_value(value, field)
       end
     end
 
-    def self.from_predicate_key_values(predicate_key_values, field)
+    def self.from_condition_key_values(condition_key_values, field)
       new(
-        clauses: predicate_key_values.map do |operator_keyword, value|
-          WhereClause.new(
+        conditions: condition_key_values.map do |operator_keyword, value|
+          ConditionFactory.from_operator_keyword(
+            operator_keyword,
             field: field,
-            value: value,
-            operator: OperatorFactory.from_keyword(operator_keyword)
+            value: value
           )
         end
       )
     end
 
     def self.from_single_field_value(value, field)
-      new(
-        clauses: [
-          WhereClause.new(field: field, value: value, operator: Operator::Default.new)
-        ]
-      )
+      new(conditions: [Condition::Default.new(field: field, value: value)])
     end
 
-    def initialize(clauses:)
-      @clauses = clauses
+    def initialize(conditions:)
+      @conditions = conditions
     end
 
     def filter(scope)
-      clauses.reduce(scope) { |acc, clause| clause.filter(acc) }
+      conditions.reduce(scope) { |acc, clause| clause.filter(acc) }
     end
 
     private
 
-    attr_reader :clauses
+    attr_reader :conditions
   end
 end

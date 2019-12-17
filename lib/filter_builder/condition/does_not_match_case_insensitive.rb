@@ -1,7 +1,7 @@
 module FilterBuilder
-  module Operator
-    class DoesNotMatchCaseInsensitive
-      def condition_for(scope, field, value)
+  module Condition
+    class DoesNotMatchCaseInsensitive < Base
+      def filter(scope)
         scope.where("#{field.namespaced} !~* ?", value)
       end
     end
