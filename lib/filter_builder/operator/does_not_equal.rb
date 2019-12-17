@@ -1,8 +1,8 @@
 module FilterBuilder
   module Operator
-    class DoesNotEqualOperator
+    class DoesNotEqual
       def condition_for(scope, field, value)
-        where.not(field.name => value)
+        scope.where.not(field.name => value)
       end
     end
   end
