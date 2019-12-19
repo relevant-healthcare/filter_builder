@@ -1,10 +1,8 @@
 require 'recursive-open-struct'
 
-require 'filter_builder/where_clause'
-require 'filter_builder/where_chain'
-require 'filter_builder/filter'
-require 'filter_builder/form'
-require 'filter_builder/core_ext'
+Dir[
+  "#{File.dirname(__FILE__)}/filter_builder/**/*.rb"
+].each { |file| require file }
 
 module FilterBuilder
 end

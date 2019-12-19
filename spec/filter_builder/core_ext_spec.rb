@@ -166,31 +166,10 @@ describe 'ActiveRecord::Base Extension' do
       end
     end
 
-    context 'when filtering with an operator' do
-      let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
-      let!(:excluded_provider) { Fabricate(:provider, npi: '4AC') }
-
-      context 'without regular expressions' do
-        let(:filter_params) do
-          { npi: { matches_case_insensitive: '3a' } }
-        end
-
-        it 'includes results where the field contains the value' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
-        end
-      end
-
-      context 'with regular expressions' do
-        let(:filter_params) do
-          { npi: { matches_case_insensitive: '^3.*$' } }
-        end
-
-        it 'includes results where the field matches the regular expression' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
-        end
-      end
-
+    context 'when filtering with an operator keyword' do
       context 'two operators filtering the same field' do
+        let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
+        let!(:excluded_provider) { Fabricate(:provider, npi: '4AC') }
         let!(:other_excluded_provider) { Fabricate(:provider, npi: '3ac') }
 
         let(:filter_params) do
@@ -203,7 +182,9 @@ describe 'ActiveRecord::Base Extension' do
       end
 
       context 'filtering a field that is shared by the base table and the joined table' do
-        let!(:patient) { Fabricate(:patient, provider: included_provider, first_name: 'Sam') }
+        let!(:included_provider) { Fabricate(:provider, patients: [patient]) }
+        let(:patient) { Fabricate.build(:patient, first_name: 'Sam') }
+        let!(:excluded_provider) { Fabricate(:provider) }
 
         let(:filter_params) do
           # patients and providers both have a first_name column
@@ -213,6 +194,104 @@ describe 'ActiveRecord::Base Extension' do
         it 'refers to the filtered column unambiguously' do
           expect(Provider.filter(filter_params)).to contain_exactly included_provider
         end
+      end
+
+      context 'matches_case_insensitive' do
+        let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
+        let!(:excluded_provider) { Fabricate(:provider, npi: '4AC') }
+        let(:filter_params) do
+          { npi: { matches_case_insensitive: '^3a.*$' } }
+        end
+
+        it 'returns records with matching values, case insensitive' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'does_not_match_case_insensitive' do
+        let!(:included_provider) { Fabricate(:provider, npi: '4AC') }
+        let!(:excluded_provider) { Fabricate(:provider, npi: '3AC') }
+        let(:filter_params) do
+          { npi: { does_not_match_case_insensitive: '^3a.*$' } }
+        end
+
+        it 'returns records without matching values, case insensitive' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'matches_case_sensitive' do
+        let!(:included_provider) { Fabricate(:provider, npi: '3aC') }
+        let!(:excluded_provider) { Fabricate(:provider, npi: '3AC') }
+        let(:filter_params) do
+          { npi: { matches_case_sensitive: '^3a.*$' } }
+        end
+
+        it 'returns records with matching values, case sensitve' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'does_not_match_case_sensitive' do
+        let!(:included_provider) { Fabricate(:provider, npi: '3AC') }
+        let!(:excluded_provider) { Fabricate(:provider, npi: '3aC') }
+        let(:filter_params) do
+          { npi: { does_not_match_case_sensitive: '^3a.*$' } }
+        end
+
+        it 'returns records without matching values, case sensitve' do
+          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+        end
+      end
+
+      context 'equals' do
+        let!(:included_provider) { Fabricate(:provider, npi: 'AC') }
+        let!(:excluded_provider) { Fabricate(:provider, npi: '3AC') }
+
+        context 'filtering to a scalar' do
+          it 'returns records with equal values' do
+            expect(Provider.filter(npi: { equals: 'AC' })).to contain_exactly included_provider
+          end
+        end
+
+        context 'filtering to a collection' do
+          let!(:other_included_provider) { Fabricate(:provider, npi: 'DC') }
+
+          it 'includes records with a value in the collection' do
+            expect(Provider.filter(npi: { equals: %w[AC DC] })).to contain_exactly(
+              included_provider, other_included_provider
+            )
+          end
+        end
+      end
+
+      context 'does_not_equal' do
+        let!(:included_provider) { Fabricate(:provider, npi: 'AC') }
+        let!(:excluded_provider) { Fabricate(:provider, npi: '3AC') }
+
+        context 'filtering to a scalar' do
+          it 'returns records with unequal values' do
+            expect(Provider.filter(npi: { does_not_equal: '3AC' })).to contain_exactly included_provider
+          end
+        end
+
+        context 'filtering to a collection' do
+          let!(:other_excluded_provider) { Fabricate(:provider, npi: 'DC') }
+
+          it 'includes records without a value in the collection' do
+            expect(Provider.filter(npi: { does_not_equal: %w[3AC DC] })).to contain_exactly(
+              included_provider
+            )
+          end
+        end
+      end
+    end
+
+    context 'with an unsupported operator keyword' do
+      it 'raises the expected error' do
+        expect do
+          Provider.filter(npi: { unsupported: 'foo'})
+        end.to raise_error FilterBuilder::UnsupportedOperatorKeywordError
       end
     end
   end

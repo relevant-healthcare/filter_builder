@@ -84,7 +84,11 @@ Example: `Patient.filter(first_name: { matches_case_insensitive: 'Lars' })` is e
 
 Supported operator keywords:
 - `matches_case_insensitive:` => `~*`
+- `does_not_match_case_insensitive:` => `!~*`
 - `matches_case_sensitive:` => `~`
+- `does_not_match_case_sensitive:` => `!~`
+- `equals:` => `=` or `IN` if passing a collection
+- `does_not_equal:` => `!=` or `NOT IN` if passing a collection
 
 ## Local Setup
 
