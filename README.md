@@ -78,7 +78,7 @@ By passing an empty hash as the argument, it's possible to call a scope without 
 
 `Provider.filter(missing_npi: [])` is equivalent to `Provider.missing_npi`
 
-Note that Filter Builder does not infer scopes that are inherited by the caller of `.filter`. Instead, it will treat that keyword like it is a column. For example, if `Foo` defines `.my_scope` and `Bar` inherits from `Foo`, then `Bar.filter(my_scope: 'my_value')` will result in `Bar.where(my_scope: 'my_value')` _not_ `Bar.my_scope`. In that case, only `Foo.filter(my_scope: 'my_value')` will result in executing the `my_scope` method.
+Note that Filter Builder does not infer scopes that are classically inherited by the caller of `.filter`. Instead, it will treat that keyword like it is a column. For example, if `Foo` defines `.my_scope` and `Bar` inherits from `Foo`, then `Bar.filter(my_scope: 'my_value')` will result in `Bar.where(my_scope: 'my_value')` _not_ `Bar.my_scope`. In that case, only `Foo.filter(my_scope: 'my_value')` will result in executing the `my_scope` method. Scopes that are provided via module inheritance will be infered. Filter Builder infers scopes from the return value of `.public_methods(false)`.
 
 **Filtering using operator keywords**:
 
