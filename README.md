@@ -65,7 +65,7 @@ end
 
 `Patient.filter(first_name: 'My Name')` is equivalent to `Patient.where(first_name: 'My Name')`
 
-Note that if a column and a scope share the same name, filering by the column will always take precedence.
+Note that if a column and a scope share the same name, filtering by the column will always take precedence.
 
 **Filtering by a belongs_to association**:
 
