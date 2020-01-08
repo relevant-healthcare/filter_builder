@@ -13,28 +13,26 @@ module FilterBuilder
         if join_and_recurse?(key, value)
           joined_class = filtered_class.reflections[key].klass
           acc.joins(key.to_sym).merge(Filter.new(joined_class, value).scope)
-        elsif scope_defined?(key.to_sym)
+        elsif filtered_class.column_names.include?(key)
+          filter_by_where_chain(acc, key, value)
+        elsif acc.respond_to?(key)
           append_scope(acc, key, value)
-        elsif scope_defined?("with_#{key}".to_sym)
+        elsif acc.respond_to?("with_#{key}")
           append_scope(acc, "with_#{key}", value)
         else
-          WhereChain.from_filter_params(
-            filtered_table: filtered_class.table_name,
-            key: key,
-            value: value
-          ).filter(acc)
+          filter_by_where_chain(acc, key, value)
         end
       end
     end
 
     private
 
-    def scope_defined?(method_name)
-      public_methods_not_from_ancestor.include?(method_name)
-    end
-
-    def public_methods_not_from_ancestor
-      filtered_class.public_methods(false)
+    def filter_by_where_chain(acc, key, value)
+      WhereChain.from_filter_params(
+        filtered_table: filtered_class.table_name,
+        key: key,
+        value: value
+      ).filter(acc)
     end
 
     def join_and_recurse?(key, value)

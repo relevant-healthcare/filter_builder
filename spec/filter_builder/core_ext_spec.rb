@@ -41,7 +41,7 @@ describe 'ActiveRecord::Base Extension' do
       let!(:included_visit) { Fabricate :visit, uds_universe: true }
       let!(:excluded_visit) { Fabricate :visit, uds_universe: false }
 
-      let(:filter_params) { { uds_universe: [] } }
+      let(:filter_params) { { uds_universe_is_true: [] } }
 
       it 'includes records returned by the scope' do
         expect(Visit.filter(filter_params)).to contain_exactly included_visit
@@ -142,13 +142,25 @@ describe 'ActiveRecord::Base Extension' do
       end
     end
 
-    context 'when filtering on a column that is also an inherited class method' do
+    context 'when filtering on a column with the same name as a class method' do
       let!(:included_health_center) { Fabricate :health_center, name: 'foo' }
       let!(:excluded_health_center) { Fabricate :health_center, name: 'bar' }
 
       let(:filter_params) { { name: 'foo' } } # HealthCenter inherits `.name` from ActiveRecord::Base
 
-      it 'filters on the column and does not call the class method' do
+      it 'filters on the column rather than the class method' do
+        expect(HealthCenter.filter(filter_params)).to contain_exactly included_health_center
+      end
+    end
+
+    context "when filtering on a column with a name that, when prefixed with 'with', is the same as the name of a class method" do
+      let!(:included_health_center) { Fabricate :health_center, name: 'foo' }
+      let!(:excluded_health_center) { Fabricate :health_center, name: 'bar' }
+
+      let(:filter_params) { { name: 'foo' } } # HealthCenter implements .with_name
+
+      it 'filters on the column rather than class method' do
+        expect(HealthCenter).not_to receive(:with_name)
         expect(HealthCenter.filter(filter_params)).to contain_exactly included_health_center
       end
     end
