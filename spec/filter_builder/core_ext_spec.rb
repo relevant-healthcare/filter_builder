@@ -274,6 +274,90 @@ describe 'ActiveRecord::Base Extension' do
           end
         end
       end
+
+      context 'is_true' do
+        let!(:included_visit) { Fabricate(:visit, billable_universe: true, patient: Fabricate(:patient)) }
+        let!(:excluded_visit) { Fabricate(:visit, billable_universe: false, patient: Fabricate(:patient)) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with values of true' do
+            expect(Visit.filter(billable_universe: { is_true: '' })).to contain_exactly included_visit
+          end
+        end
+
+        context 'filtering to a collection' do
+          let!(:other_excluded_provider) { Fabricate(:provider, npi: 'DC') }
+
+          it 'includes records without value of true in the collection' do
+            expect(Visit.filter(billable_universe: { is_true: %w[] })).to contain_exactly(
+              included_visit
+            )
+          end
+        end
+      end
+
+      context 'is_false' do
+        let!(:included_visit) { Fabricate(:visit, billable_universe: false, patient: Fabricate(:patient)) }
+        let!(:excluded_visit) { Fabricate(:visit, billable_universe: true, patient: Fabricate(:patient)) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with values of false' do
+            expect(Visit.filter(billable_universe: { is_false: '' })).to contain_exactly included_visit
+          end
+        end
+
+        context 'filtering to a collection' do
+          let!(:other_excluded_provider) { Fabricate(:provider, npi: 'DC') }
+
+          it 'includes records without a value of false in the collection' do
+            expect(Visit.filter(billable_universe: { is_false: %w[] })).to contain_exactly(
+              included_visit
+            )
+          end
+        end
+      end
+
+      context 'is_null' do
+        let!(:included_visit) { Fabricate(:visit, billable_universe: nil, patient: Fabricate(:patient)) }
+        let!(:excluded_visit) { Fabricate(:visit, billable_universe: false, patient: Fabricate(:patient)) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with values of null' do
+            expect(Visit.filter(billable_universe: { is_null: '' })).to contain_exactly included_visit
+          end
+        end
+
+        context 'filtering to a collection' do
+          let!(:other_excluded_provider) { Fabricate(:provider, npi: 'DC') }
+
+          it 'includes records without a value of null in the collection' do
+            expect(Visit.filter(billable_universe: { is_null: %w[] })).to contain_exactly(
+              included_visit
+            )
+          end
+        end
+      end
+
+      context 'is_not_null' do
+        let!(:included_visit) { Fabricate(:visit, billable_universe: true, patient: Fabricate(:patient)) }
+        let!(:excluded_visit) { Fabricate(:visit, billable_universe: nil, patient: Fabricate(:patient)) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with values of not null' do
+            expect(Visit.filter(billable_universe: { is_not_null: '' })).to contain_exactly included_visit
+          end
+        end
+
+        context 'filtering to a collection' do
+          let!(:other_excluded_provider) { Fabricate(:provider, npi: 'DC') }
+
+          it 'includes records without a value of not null in the collection' do
+            expect(Visit.filter(billable_universe: { is_not_null: %w[] })).to contain_exactly(
+              included_visit
+            )
+          end
+        end
+      end
     end
 
     context 'with an unsupported operator keyword' do

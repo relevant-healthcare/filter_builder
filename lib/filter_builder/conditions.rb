@@ -44,5 +44,27 @@ module FilterBuilder
         scope.where("#{field.namespaced} !~ ?", value)
       end
     end
+
+    class IsTrue < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} = TRUE")
+      end
+    end
+    class IsFalse < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} = FALSE")
+      end
+    end
+    class IsNull < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} IS NULL")
+      end
+    end
+
+    class IsNotNull < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} IS NOT NULL")
+      end
+    end
   end
 end

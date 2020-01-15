@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191205175558) do
+ActiveRecord::Schema.define(version: 20200115165423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,8 +40,9 @@ ActiveRecord::Schema.define(version: 20191205175558) do
     t.boolean  "uds_universe"
     t.integer  "patient_id"
     t.integer  "provider_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "billable_universe", default: true
   end
 
   add_index "visits", ["patient_id"], name: "index_visits_on_patient_id", using: :btree
