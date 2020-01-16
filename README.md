@@ -89,10 +89,6 @@ Supported operator keywords:
 - `does_not_match_case_sensitive:` => `!~`
 - `equals:` => `=` or `IN` if passing a collection
 - `does_not_equal:` => `!=` or `NOT IN` if passing a collection
-- `is_true` => `= TRUE`
-- `is_false` => `= FALSE`
-- `is_null` => `IS NULL`
-- `is_not_null` => `IS NOT NULL`
 
 ## Local Setup
 
