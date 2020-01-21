@@ -89,6 +89,10 @@ Supported operator keywords:
 - `does_not_match_case_sensitive:` => `!~`
 - `equals:` => `=` or `IN` if passing a collection
 - `does_not_equal:` => `!=` or `NOT IN` if passing a collection
+- `less_than:` => `<`
+- `less_than_or_equals:` => `<=`
+- `greater_than:` => `>`
+- `greater_than_or_equals:` => `>=`
 
 ## Local Setup
 

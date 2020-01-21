@@ -57,13 +57,13 @@ module FilterBuilder
       end
     end
 
-    class GreaterThanOrEqualTo < Condition
+    class GreaterThanOrEquals < Condition
       def filter(scope)
         scope.where("#{field.namespaced} >= ?", value)
       end
     end
 
-    class LessThanOrEqualTo < Condition
+    class LessThanOrEquals < Condition
       def filter(scope)
         scope.where("#{field.namespaced} <= ?", value)
       end
