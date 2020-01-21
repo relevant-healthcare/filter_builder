@@ -275,86 +275,62 @@ describe 'ActiveRecord::Base Extension' do
         end
       end
 
-      context 'greater_than' do
+      context 'gt' do
         let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 3) }
         let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
 
         context 'filtering to a scalar' do
           it 'returns records with greater numeric values' do
-            expect(Provider.filter(twelve_month_panel_target: { greater_than: 1 })).to contain_exactly included_provider
-          end
-        end
-
-        context 'filtering to a collection' do
-          let!(:other_excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 0) }
-
-          it 'includes records without a greater value in the collection' do
-            expect(Provider.filter(twelve_month_panel_target: { greater_than: %w[1] })).to contain_exactly(
-              included_provider
-            )
+            expect(Provider.filter(twelve_month_panel_target: { gt: 1 })).to include(
+                                                                               included_provider,
+                                                                               other_included_provider
+                                                                             )
           end
         end
       end
 
-      context 'less_than' do
+      context 'lt' do
         let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 0) }
         let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
 
         context 'filtering to a scalar' do
           it 'returns records with less than values' do
-            expect(Provider.filter(twelve_month_panel_target: { less_than: 2 })).to contain_exactly included_provider
-          end
-        end
-
-        context 'filtering to a collection' do
-          let!(:other_excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 3) }
-
-          it 'includes records without a less than value in the collection' do
-            expect(Provider.filter(twelve_month_panel_target: { less_than: %w[2] })).to contain_exactly(
-              included_provider
-            )
+            expect(Provider.filter(twelve_month_panel_target: { lt: 2 })).to include(
+                                                                               included_provider,
+                                                                               other_included_provider
+                                                                             )
           end
         end
       end
 
-      context 'greater_than_or_equals' do
+      context 'gte' do
         let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 3) }
         let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
 
         context 'filtering to a scalar' do
           it 'returns records with greater than or equals values' do
-            expect(Provider.filter(twelve_month_panel_target: { greater_than_or_equals: 2 })).to contain_exactly included_provider
-          end
-        end
-
-        context 'filtering to a collection' do
-          let!(:other_excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 0) }
-
-          it 'includes records without a greater than or equals value in the collection' do
-            expect(Provider.filter(twelve_month_panel_target: { greater_than_or_equals: %w[2] })).to contain_exactly(
-              included_provider
-            )
+            expect(Provider.filter(twelve_month_panel_target: { gte: 2 })).to include(
+                                                                                included_provider,
+                                                                                other_included_provider
+                                                                              )
           end
         end
       end
 
-      context 'less_than_or_equals' do
+      context 'lte' do
         let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 0) }
         let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
 
         context 'filtering to a scalar' do
           it 'returns records with less than or equals values' do
-            expect(Provider.filter(twelve_month_panel_target: { less_than_or_equals: 1 })).to contain_exactly included_provider
-          end
-        end
-
-        context 'filtering to a collection' do
-          let!(:other_excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 3) }
-
-          it 'includes records without a less than or equals value in the collection' do
-            expect(Provider.filter(twelve_month_panel_target: { less_than_or_equals: %w[1] })).to contain_exactly(
-              included_provider
-            )
+            expect(Provider.filter(twelve_month_panel_target: { lte: 1 })).to include(
+                                                                                included_provider,
+                                                                                other_included_provider
+                                                                              )
           end
         end
       end

@@ -45,25 +45,25 @@ module FilterBuilder
       end
     end
 
-    class GreaterThan < Condition
+    class Gt < Condition
       def filter(scope)
         scope.where("#{field.namespaced} > ?", value)
       end
     end
 
-    class LessThan < Condition
+    class Lt < Condition
       def filter(scope)
         scope.where("#{field.namespaced} < ?", value)
       end
     end
 
-    class GreaterThanOrEquals < Condition
+    class Gte < Condition
       def filter(scope)
         scope.where("#{field.namespaced} >= ?", value)
       end
     end
 
-    class LessThanOrEquals < Condition
+    class Lte < Condition
       def filter(scope)
         scope.where("#{field.namespaced} <= ?", value)
       end
