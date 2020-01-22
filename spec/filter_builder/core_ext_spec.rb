@@ -282,10 +282,10 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with greater numeric values' do
-            expect(Provider.filter(twelve_month_panel_target: { gt: 1 })).to include(
-                                                                               included_provider,
-                                                                               other_included_provider
-                                                                             )
+            expect(Provider.filter(twelve_month_panel_target: { gt: 1 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
           end
         end
       end
@@ -297,10 +297,10 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with less than values' do
-            expect(Provider.filter(twelve_month_panel_target: { lt: 2 })).to include(
-                                                                               included_provider,
-                                                                               other_included_provider
-                                                                             )
+            expect(Provider.filter(twelve_month_panel_target: { lt: 2 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
           end
         end
       end
@@ -312,10 +312,10 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with greater than or equals values' do
-            expect(Provider.filter(twelve_month_panel_target: { gte: 2 })).to include(
-                                                                                included_provider,
-                                                                                other_included_provider
-                                                                              )
+            expect(Provider.filter(twelve_month_panel_target: { gte: 2 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
           end
         end
       end
@@ -327,10 +327,10 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with less than or equals values' do
-            expect(Provider.filter(twelve_month_panel_target: { lte: 1 })).to include(
-                                                                                included_provider,
-                                                                                other_included_provider
-                                                                              )
+            expect(Provider.filter(twelve_month_panel_target: { lte: 1 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
           end
         end
       end
