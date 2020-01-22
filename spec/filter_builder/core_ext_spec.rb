@@ -274,6 +274,66 @@ describe 'ActiveRecord::Base Extension' do
           end
         end
       end
+
+      context 'gt' do
+        let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 3) }
+        let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with greater numeric values' do
+            expect(Provider.filter(twelve_month_panel_target: { gt: 1 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
+          end
+        end
+      end
+
+      context 'lt' do
+        let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 0) }
+        let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with less than values' do
+            expect(Provider.filter(twelve_month_panel_target: { lt: 2 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
+          end
+        end
+      end
+
+      context 'gte' do
+        let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 3) }
+        let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with greater than or equals values' do
+            expect(Provider.filter(twelve_month_panel_target: { gte: 2 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
+          end
+        end
+      end
+
+      context 'lte' do
+        let!(:included_provider) { Fabricate(:provider, twelve_month_panel_target: 1) }
+        let!(:other_included_provider) { Fabricate(:provider, twelve_month_panel_target: 0) }
+        let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 2) }
+
+        context 'filtering to a scalar' do
+          it 'returns records with less than or equals values' do
+            expect(Provider.filter(twelve_month_panel_target: { lte: 1 })).to contain_exactly(
+              included_provider,
+              other_included_provider
+            )
+          end
+        end
+      end
     end
 
     context 'with an unsupported operator keyword' do
