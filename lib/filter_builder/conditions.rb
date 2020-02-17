@@ -68,5 +68,11 @@ module FilterBuilder
         scope.where("#{field.namespaced} <= ?", value)
       end
     end
+
+    class Between < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} BETWEEN ? AND ?", *value)
+      end
+    end
   end
 end
