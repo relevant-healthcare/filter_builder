@@ -71,7 +71,7 @@ module FilterBuilder
 
     class Between < Condition
       def filter(scope)
-        scope.where("#{field.namespaced} BETWEEN ? AND ?", *value)
+        scope.where("#{field.namespaced} BETWEEN ? AND ?", value)
       end
     end
   end
