@@ -344,7 +344,7 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with less than or equals values' do
-            expect(Provider.filter(twelve_month_panel_target: { between: %w[1 3]})).to contain_exactly(
+            expect(Provider.filter(twelve_month_panel_target: { between: [[1, 3]]})).to contain_exactly(
               included_provider_one,
               included_provider_two,
               included_provider_three

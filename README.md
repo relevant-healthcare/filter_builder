@@ -7,6 +7,7 @@ FilterBuilder is used to dynamically filter an ActiveRecord model based on a has
 Filter Builder implements `.filter` on ActiveRecord::Base, making `.filter` available on any child of ActiveRecord::Base.
 
 ### `.filter`
+
 required argument: Hash
 
 returned value: ActiveRecord_Relation
@@ -14,6 +15,7 @@ returned value: ActiveRecord_Relation
 #### Example method calls:
 
 Given the schema:
+
 ```
 create_table "patients", force: :cascade do |t|
   t.string   "first_name"
@@ -34,6 +36,7 @@ end
 ```
 
 and the models:
+
 ```
 # models/patient.rb
 class Patient < ApplicationRecord
@@ -83,6 +86,7 @@ By passing an empty hash as the argument, it's possible to call a scope without 
 Example: `Patient.filter(first_name: { matches_case_insensitive: 'Lars' })` is equivalent to `Patient.where("patients.first_name ~* 'Larse'")`
 
 Supported operator keywords:
+
 - `matches_case_insensitive:` => `~*`
 - `does_not_match_case_insensitive:` => `!~*`
 - `matches_case_sensitive:` => `~`
@@ -93,6 +97,7 @@ Supported operator keywords:
 - `lte:` => `<=`
 - `gt:` => `>`
 - `gte:` => `>=`
+- `between:` => `BETWEEN`
 
 ## Local Setup
 
@@ -104,4 +109,5 @@ Supported operator keywords:
 - `bundle exec rake db:reset`
 
 To run specs:
+
 - `bundle exec rspec`
