@@ -97,7 +97,7 @@ Supported operator keywords:
 - `lte:` => `<=`
 - `gt:` => `>`
 - `gte:` => `>=`
-- `between:` => `BETWEEN`
+- `between:` => `BETWEEN` must pass a hash with keys `{ min: ?, max: ? }`
 
 ## Local Setup
 
