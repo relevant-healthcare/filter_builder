@@ -342,8 +342,8 @@ describe 'ActiveRecord::Base Extension' do
         let!(:included_provider_three) { Fabricate(:provider, twelve_month_panel_target: 3) }
         let!(:other_excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 4) }
 
-        it "returns records between the first and second values of the collection's first value" do
-          expect(Provider.filter(twelve_month_panel_target: { between: %w[1 3]})).to contain_exactly(
+        it "returns records between the min and max values" do
+          expect(Provider.filter(twelve_month_panel_target: { between: { min: 1, max: 3 }})).to contain_exactly(
             included_provider_one,
             included_provider_two,
             included_provider_three
