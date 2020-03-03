@@ -334,6 +334,22 @@ describe 'ActiveRecord::Base Extension' do
           end
         end
       end
+
+      context 'between' do
+        let!(:excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 0) }
+        let!(:included_provider_one) { Fabricate(:provider, twelve_month_panel_target: 1) }
+        let!(:included_provider_two) { Fabricate(:provider, twelve_month_panel_target: 2) }
+        let!(:included_provider_three) { Fabricate(:provider, twelve_month_panel_target: 3) }
+        let!(:other_excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 4) }
+
+        it "returns records between the min and max values" do
+          expect(Provider.filter(twelve_month_panel_target: { between: { min: 1, max: 3 }})).to contain_exactly(
+            included_provider_one,
+            included_provider_two,
+            included_provider_three
+          )
+        end
+      end
     end
 
     context 'with an unsupported operator keyword' do
