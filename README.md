@@ -65,6 +65,8 @@ end
 
 `Patient.filter(first_name: 'My Name')` is equivalent to `Patient.where(first_name: 'My Name')`
 
+Note that if a column and a scope share the same name, filtering by the column will always take precedence.
+
 **Filtering by a belongs_to association**:
 
 `Patient.filter(provider: { npi: 'some_npi' })` is equivalent to `Patient.joins(:provider).merge(Provider.where(npi: some_npi))`

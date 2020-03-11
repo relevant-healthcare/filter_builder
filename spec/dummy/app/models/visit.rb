@@ -2,7 +2,7 @@ class Visit < ActiveRecord::Base
   belongs_to :patient
   belongs_to :provider
 
-  scope :uds_universe, -> { where(uds_universe: true) }
+  scope :uds_universe_is_true, -> { where(uds_universe: true) }
 
   class << self
     def with_date_on_or_before(date)
