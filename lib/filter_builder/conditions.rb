@@ -44,5 +44,35 @@ module FilterBuilder
         scope.where("#{field.namespaced} !~ ?", value)
       end
     end
+
+    class Gt < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} > ?", value)
+      end
+    end
+
+    class Lt < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} < ?", value)
+      end
+    end
+
+    class Gte < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} >= ?", value)
+      end
+    end
+
+    class Lte < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} <= ?", value)
+      end
+    end
+
+    class Between < Condition
+      def filter(scope)
+        scope.where("#{field.namespaced} BETWEEN :min AND :max", value)
+      end
+    end
   end
 end

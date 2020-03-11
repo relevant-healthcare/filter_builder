@@ -73,11 +73,11 @@ Note that if a column and a scope share the same name, filtering by the column w
 
 **Filtering by a scope**:
 
-`Patient.filter(born_after: 5.year.ago)` is equivalent to `Patient.born_after(5.years.ago)`
+`Patient.filter(born_after: 5.years.ago)` is equivalent to `Patient.born_after(5.years.ago)`
 
 Filter Builder will look for scopes that match the keyword prefix with "with". For example:
 
-`Provider.filter(age: 28)` is equivalent to `Provider.with_age(28`
+`Provider.filter(age: 28)` is equivalent to `Provider.with_age(28)`
 
 By passing an empty hash as the argument, it's possible to call a scope without an argument. For example:
 
@@ -95,6 +95,11 @@ Supported operator keywords:
 - `does_not_match_case_sensitive:` => `!~`
 - `equals:` => `=` or `IN` if passing a collection
 - `does_not_equal:` => `!=` or `NOT IN` if passing a collection
+- `lt:` => `<`
+- `lte:` => `<=`
+- `gt:` => `>`
+- `gte:` => `>=`
+- `between:` => `BETWEEN` expects a value of a hash with keys `min` and `max` e.g `{ min: ?, max: ? }`
 
 ## Local Setup
 
