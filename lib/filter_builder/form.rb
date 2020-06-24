@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module FilterBuilder
   class Form
-    attr_reader :filtered_class, :attributes
+    attr_reader :filtered_class, :filter_params
 
     def initialize(filtered_class, params = {})
       @filtered_class = filtered_class
-      @attributes = RecursiveOpenStruct.new(params.to_h)
+      @filter_params = FilterBuilder::Form::Params.new(params.to_h)
     end
 
     def results
@@ -12,11 +14,7 @@ module FilterBuilder
     end
 
     def method_missing(method, *args)
-      attributes.send(method, *args)
-    end
-
-    def filter_params
-      deep_cast(attributes)
+      filter_params.attributes.send(method, *args)
     end
 
     private
@@ -25,14 +23,32 @@ module FilterBuilder
       FilterBuilder::Filter.new(filtered_class, filter_params)
     end
 
-    def deep_cast(struct)
-      struct.to_h.transform_values do |val|
-        case val
-        when Array then val.map(&:presence)
-        when Hash then deep_cast(val).presence
-        else val.presence
-        end
-      end.compact
+    class Params
+      attr_reader :attributes
+
+      def initialize(params)
+        @attributes = RecursiveOpenStruct.new(params.to_h)
+      end
+
+      def filter_params
+        @filter_params ||= deep_cast(attributes)
+      end
+
+      def to_h
+        filter_params.to_h
+      end
+
+      private
+
+      def deep_cast(struct)
+        struct.to_h.transform_values do |val|
+          case val
+          when Array then val.map(&:presence)
+          when Hash then deep_cast(val).presence
+          else val.presence
+          end
+        end.compact
+      end
     end
   end
 end
