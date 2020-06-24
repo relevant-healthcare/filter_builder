@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FilterBuilder
   class Form
     attr_reader :filtered_class, :filter_params
