@@ -22,7 +22,7 @@ module FilterBuilder
             filtered_table: filtered_class.table_name,
             key: key,
             value: value
-          ).filter(acc)
+          ).filterbuilder_filter(acc)
         end
       end
     end

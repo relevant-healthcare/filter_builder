@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'ActiveRecord::Base Extension' do
-  describe '.filter' do
+  describe '.filterbuilder_filter' do
     context 'when filtering based on attributes' do
       let!(:included_patient) do
         Fabricate :patient, first_name: 'TestFirst', last_name: 'TestLast'
@@ -20,7 +20,7 @@ describe 'ActiveRecord::Base Extension' do
       end
 
       it 'includes records with the specified fields' do
-        expect(Patient.filter(filter_params)).to contain_exactly included_patient
+        expect(Patient.filterbuilder_filter(filter_params)).to contain_exactly included_patient
       end
     end
 
@@ -33,7 +33,7 @@ describe 'ActiveRecord::Base Extension' do
       let(:filter_params) { { visits: { provider: { npi: 'some_npi' } } } }
 
       it 'includes records with the specified fields in their joined relationships' do
-        expect(Patient.filter(filter_params)).to contain_exactly included_patient
+        expect(Patient.filterbuilder_filter(filter_params)).to contain_exactly included_patient
       end
     end
 
@@ -44,7 +44,7 @@ describe 'ActiveRecord::Base Extension' do
       let(:filter_params) { { uds_universe: [] } }
 
       it 'includes records returned by the scope' do
-        expect(Visit.filter(filter_params)).to contain_exactly included_visit
+        expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
       end
     end
 
@@ -66,7 +66,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'includes records returned by the scope matching the filter key prepended by with_' do
-          expect(Patient.filter(filter_params)).to contain_exactly included_patient
+          expect(Patient.filterbuilder_filter(filter_params)).to contain_exactly included_patient
         end
       end
 
@@ -81,7 +81,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'includes records returned by the scope matching the filter key prepended by with_' do
-          expect(Patient.filter(filter_params)).to contain_exactly included_patient
+          expect(Patient.filterbuilder_filter(filter_params)).to contain_exactly included_patient
         end
       end
     end
@@ -94,14 +94,14 @@ describe 'ActiveRecord::Base Extension' do
         context 'when the filter key only matches a scope when prepended by with_' do
           let(:filter_params) { { date_on_or_after: ['2016-06-01'] } }
           it 'includes records returned by the scope matching filter key prepended by with_' do
-            expect(Visit.filter(filter_params)).to contain_exactly included_visit
+            expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
           end
         end
 
         context 'when the filter key matches a scope exactly' do
           let(:filter_params) { { with_date_on_or_after: ['2016-06-01'] } }
           it 'includes records returned by the scope matching filter key with no prefix' do
-            expect(Visit.filter(filter_params)).to contain_exactly included_visit
+            expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
           end
         end
       end
@@ -110,14 +110,14 @@ describe 'ActiveRecord::Base Extension' do
         context 'when the filter key only matches a scope when prepended by with_' do
           let(:filter_params) { { date_on_or_after: '2016-06-01' } }
           it 'includes records returned by the scope matching filter key prepended by with_' do
-            expect(Visit.filter(filter_params)).to contain_exactly included_visit
+            expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
           end
         end
 
         context 'when the filter key matches a scope exactly' do
           let(:filter_params) { { with_date_on_or_after: '2016-06-01' } }
           it 'includes records returned by the scope matching filter key with no prefix' do
-            expect(Visit.filter(filter_params)).to contain_exactly included_visit
+            expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
           end
         end
       end
@@ -130,14 +130,14 @@ describe 'ActiveRecord::Base Extension' do
       context 'when the filter key matches a scope exactly' do
         let(:filter_params) { { with_visit_sets: { id: :uds } } }
         it 'passes the hash argument correctly, returning scoped results' do
-          expect(Visit.filter(filter_params)).to contain_exactly included_visit
+          expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
         end
       end
 
       context 'when the filter key only matches a scope prepended by with_' do
         let(:filter_params) { { visit_sets: { id: :uds } } }
         it 'passes the hash argument correctly, returning scoped results' do
-          expect(Visit.filter(filter_params)).to contain_exactly included_visit
+          expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
         end
       end
     end
@@ -151,7 +151,7 @@ describe 'ActiveRecord::Base Extension' do
       end
 
       it 'still filters' do
-        expect(Visit.filter(filter_params)).to contain_exactly included_visit
+        expect(Visit.filterbuilder_filter(filter_params)).to contain_exactly included_visit
       end
     end
 
@@ -166,7 +166,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'includes results with matching values' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+          expect(Provider.filterbuilder_filter(filter_params)).to contain_exactly included_provider
         end
       end
 
@@ -181,7 +181,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'refers to the filtered column unambiguously' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+          expect(Provider.filterbuilder_filter(filter_params)).to contain_exactly included_provider
         end
       end
 
@@ -193,7 +193,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'returns records with matching values, case insensitive' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+          expect(Provider.filterbuilder_filter(filter_params)).to contain_exactly included_provider
         end
       end
 
@@ -205,7 +205,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'returns records without matching values, case insensitive' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+          expect(Provider.filterbuilder_filter(filter_params)).to contain_exactly included_provider
         end
       end
 
@@ -217,7 +217,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'returns records with matching values, case sensitve' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+          expect(Provider.filterbuilder_filter(filter_params)).to contain_exactly included_provider
         end
       end
 
@@ -229,7 +229,7 @@ describe 'ActiveRecord::Base Extension' do
         end
 
         it 'returns records without matching values, case sensitve' do
-          expect(Provider.filter(filter_params)).to contain_exactly included_provider
+          expect(Provider.filterbuilder_filter(filter_params)).to contain_exactly included_provider
         end
       end
 
@@ -239,7 +239,7 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with equal values' do
-            expect(Provider.filter(npi: { equals: 'AC' })).to contain_exactly included_provider
+            expect(Provider.filterbuilder_filter(npi: { equals: 'AC' })).to contain_exactly included_provider
           end
         end
 
@@ -247,7 +247,7 @@ describe 'ActiveRecord::Base Extension' do
           let!(:other_included_provider) { Fabricate(:provider, npi: 'DC') }
 
           it 'includes records with a value in the collection' do
-            expect(Provider.filter(npi: { equals: %w[AC DC] })).to contain_exactly(
+            expect(Provider.filterbuilder_filter(npi: { equals: %w[AC DC] })).to contain_exactly(
               included_provider, other_included_provider
             )
           end
@@ -260,7 +260,7 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with unequal values' do
-            expect(Provider.filter(npi: { does_not_equal: '3AC' })).to contain_exactly included_provider
+            expect(Provider.filterbuilder_filter(npi: { does_not_equal: '3AC' })).to contain_exactly included_provider
           end
         end
 
@@ -268,7 +268,7 @@ describe 'ActiveRecord::Base Extension' do
           let!(:other_excluded_provider) { Fabricate(:provider, npi: 'DC') }
 
           it 'includes records without a value in the collection' do
-            expect(Provider.filter(npi: { does_not_equal: %w[3AC DC] })).to contain_exactly(
+            expect(Provider.filterbuilder_filter(npi: { does_not_equal: %w[3AC DC] })).to contain_exactly(
               included_provider
             )
           end
@@ -282,7 +282,7 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with greater numeric values' do
-            expect(Provider.filter(twelve_month_panel_target: { gt: 1 })).to contain_exactly(
+            expect(Provider.filterbuilder_filter(twelve_month_panel_target: { gt: 1 })).to contain_exactly(
               included_provider,
               other_included_provider
             )
@@ -297,7 +297,7 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with less than values' do
-            expect(Provider.filter(twelve_month_panel_target: { lt: 2 })).to contain_exactly(
+            expect(Provider.filterbuilder_filter(twelve_month_panel_target: { lt: 2 })).to contain_exactly(
               included_provider,
               other_included_provider
             )
@@ -312,7 +312,7 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with greater than or equals values' do
-            expect(Provider.filter(twelve_month_panel_target: { gte: 2 })).to contain_exactly(
+            expect(Provider.filterbuilder_filter(twelve_month_panel_target: { gte: 2 })).to contain_exactly(
               included_provider,
               other_included_provider
             )
@@ -327,7 +327,7 @@ describe 'ActiveRecord::Base Extension' do
 
         context 'filtering to a scalar' do
           it 'returns records with less than or equals values' do
-            expect(Provider.filter(twelve_month_panel_target: { lte: 1 })).to contain_exactly(
+            expect(Provider.filterbuilder_filter(twelve_month_panel_target: { lte: 1 })).to contain_exactly(
               included_provider,
               other_included_provider
             )
@@ -343,7 +343,7 @@ describe 'ActiveRecord::Base Extension' do
         let!(:other_excluded_provider) { Fabricate(:provider, twelve_month_panel_target: 4) }
 
         it "returns records between the min and max values" do
-          expect(Provider.filter(twelve_month_panel_target: { between: { min: 1, max: 3 }})).to contain_exactly(
+          expect(Provider.filterbuilder_filter(twelve_month_panel_target: { between: { min: 1, max: 3 }})).to contain_exactly(
             included_provider_one,
             included_provider_two,
             included_provider_three
@@ -355,7 +355,7 @@ describe 'ActiveRecord::Base Extension' do
     context 'with an unsupported operator keyword' do
       it 'raises the expected error' do
         expect do
-          Provider.filter(npi: { unsupported: 'foo'})
+          Provider.filterbuilder_filter(npi: { unsupported: 'foo'})
         end.to raise_error FilterBuilder::UnsupportedOperatorKeywordError
       end
     end

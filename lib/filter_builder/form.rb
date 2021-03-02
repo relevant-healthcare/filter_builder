@@ -8,7 +8,7 @@ module FilterBuilder
     end
 
     def results
-      filter.scope
+      filterbuiler_filter.scope
     end
 
     def method_missing(method, *args)
@@ -21,7 +21,7 @@ module FilterBuilder
 
     private
 
-    def filter
+    def filterbuiler_filter
       FilterBuilder::Filter.new(filtered_class, filter_params)
     end
 
