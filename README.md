@@ -4,9 +4,9 @@ FilterBuilder is used to dynamically filter an ActiveRecord model based on a has
 
 ## API
 
-Filter Builder implements `.filter` on ActiveRecord::Base, making `.filter` available on any child of ActiveRecord::Base.
+Filter Builder implements `.filterbuilder_filter` on ActiveRecord::Base, making `.filterbuilder_filter` available on any child of ActiveRecord::Base.
 
-### `.filter`
+### `.filterbuilder_filter`
 
 required argument: Hash
 
@@ -63,27 +63,27 @@ end
 
 **Filtering by column**:
 
-`Patient.filter(first_name: 'My Name')` is equivalent to `Patient.where(first_name: 'My Name')`
+`Patient.filterbuilder_filter(first_name: 'My Name')` is equivalent to `Patient.where(first_name: 'My Name')`
 
 **Filtering by a belongs_to association**:
 
-`Patient.filter(provider: { npi: 'some_npi' })` is equivalent to `Patient.joins(:provider).merge(Provider.where(npi: some_npi))`
+`Patient.filterbuilder_filter(provider: { npi: 'some_npi' })` is equivalent to `Patient.joins(:provider).merge(Provider.where(npi: some_npi))`
 
 **Filtering by a scope**:
 
-`Patient.filter(born_after: 5.years.ago)` is equivalent to `Patient.born_after(5.years.ago)`
+`Patient.filterbuilder_filter(born_after: 5.years.ago)` is equivalent to `Patient.born_after(5.years.ago)`
 
 Filter Builder will look for scopes that match the keyword prefix with "with". For example:
 
-`Provider.filter(age: 28)` is equivalent to `Provider.with_age(28)`
+`Provider.filterbuilder_filter(age: 28)` is equivalent to `Provider.with_age(28)`
 
 By passing an empty hash as the argument, it's possible to call a scope without an argument. For example:
 
-`Provider.filter(missing_npi: [])` is equivalent to `Provider.missing_npi`
+`Provider.filterbuilder_filter(missing_npi: [])` is equivalent to `Provider.missing_npi`
 
 **Filtering using operator keywords**:
 
-Example: `Patient.filter(first_name: { matches_case_insensitive: 'Lars' })` is equivalent to `Patient.where("patients.first_name ~* 'Larse'")`
+Example: `Patient.filterbuilder_filter(first_name: { matches_case_insensitive: 'Lars' })` is equivalent to `Patient.where("patients.first_name ~* 'Larse'")`
 
 Supported operator keywords:
 
@@ -105,7 +105,9 @@ Supported operator keywords:
 - `cd filter_builder`
 - `bundle install`
 - Start postgres
-- Create a postgres user with name 'filter_builder' that can create databases
+- Create a postgres user with name "filter_builder" that can create databases:
+    - `psql postgres`
+    - `CREATE USER filter_builder WITH CREATEDB;`
 - `bundle exec rake db:reset`
 
 To run specs:
