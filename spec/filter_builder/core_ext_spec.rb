@@ -149,7 +149,7 @@ describe 'ActiveRecord::Base Extension' do
       let(:filter_params) { { name: 'foo' } } # HealthCenter inherits `.name` from ActiveRecord::Base
 
       it 'filters on the column rather than the class method' do
-        expect(HealthCenter.filter(filter_params)).to contain_exactly included_health_center
+        expect(HealthCenter.filterbuilder_filter(filter_params)).to contain_exactly included_health_center
       end
     end
 
@@ -161,7 +161,7 @@ describe 'ActiveRecord::Base Extension' do
 
       it 'filters on the column rather than class method' do
         expect(HealthCenter).not_to receive(:with_name)
-        expect(HealthCenter.filter(filter_params)).to contain_exactly included_health_center
+        expect(HealthCenter.filterbuilder_filter(filter_params)).to contain_exactly included_health_center
       end
     end
 
