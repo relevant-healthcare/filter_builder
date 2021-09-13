@@ -51,8 +51,18 @@ jobs:
         <<: *postgres_defaults
     <<: *working_directory_and_steps_defaults
 
+  ruby_2.7.4_build_and_test:
+    docker:
+      - image: circleci/ruby:2.7.4
+        environment:
+          RAILS_ENV: test
+      - image: circleci/postgres:9.6
+        <<: *postgres_defaults
+    <<: *working_directory_and_steps_defaults
+
 workflows:
   version: 2
   build_and_test:
     jobs:
+      - ruby_2.7.4_build_and_test
       - ruby_2.5.5_build_and_test
