@@ -7,3 +7,7 @@ spec/dummy/log/*.log
 spec/dummy/tmp/
 spec/dummy/.sass-cache
 .byebug_history
+# When developing a ruby gem, don't check in Gemfile.lock (source: https://yehudakatz.com/2010/12/16/clarifying-the-roles-of-the-gemspec-and-gemfile/)
+Gemfile.lock
+# Appraisal-generated gemfiles
+gemfiles/*.gemfile.lock

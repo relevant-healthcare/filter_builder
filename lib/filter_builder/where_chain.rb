@@ -29,8 +29,8 @@ module FilterBuilder
       @conditions = conditions
     end
 
-    def filter(scope)
-      conditions.reduce(scope) { |acc, clause| clause.filter(acc) }
+    def filterbuilder_filter(scope)
+      conditions.reduce(scope) { |acc, clause| clause.filterbuilder_filter(acc) }
     end
 
     private

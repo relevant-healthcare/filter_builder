@@ -4,8 +4,8 @@ working_directory_and_steps_defaults: &working_directory_and_steps_defaults
     - checkout
     - restore_cache:
         keys:
-        - v1-dependencies-{{ .Branch }}-{{ .Revision }}
-        - v1-dependencies-{{ .Branch }}
+          - v1-dependencies-{{ .Branch }}-{{ .Revision }}
+          - v1-dependencies-{{ .Branch }}
     - run:
         name: install dependencies
         command: |
@@ -19,10 +19,6 @@ working_directory_and_steps_defaults: &working_directory_and_steps_defaults
     - run: bundle exec appraisal rails-5-2 'cd spec/dummy/ && rails db:environment:set RAILS_ENV=test'
     - run: bundle exec appraisal 'cd spec/dummy/ && rake db:schema:load'
     - run: mkdir /tmp/test-results
-    - run:
-        name: run rails 4 tests
-        command: |
-          bundle exec appraisal rails-4 rspec -r rspec_junit_formatter --format progress --format RspecJunitFormatter
     - run:
         name: run rails 5.0 tests
         command: |
@@ -46,9 +42,18 @@ postgres_defaults: &postgres_defaults
 
 version: 2
 jobs:
-  ruby_2.4.5_build_and_test:
+  ruby_2.5.5_build_and_test:
     docker:
-      - image: circleci/ruby:2.4.5
+      - image: circleci/ruby:2.5.5
+        environment:
+          RAILS_ENV: test
+      - image: circleci/postgres:9.6
+        <<: *postgres_defaults
+    <<: *working_directory_and_steps_defaults
+
+  ruby_2.7.4_build_and_test:
+    docker:
+      - image: circleci/ruby:2.7.4
         environment:
           RAILS_ENV: test
       - image: circleci/postgres:9.6
@@ -59,4 +64,5 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - ruby_2.4.5_build_and_test
+      - ruby_2.7.4_build_and_test
+      - ruby_2.5.5_build_and_test
