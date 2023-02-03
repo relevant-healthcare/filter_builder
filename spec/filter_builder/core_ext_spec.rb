@@ -373,6 +373,30 @@ describe 'ActiveRecord::Base Extension' do
           )
         end
       end
+
+      context 'when model table name specifies a schema' do
+        it "works with various conditions that interpolate the table name, including the schema in the SQL" do
+          model = Class.new(Provider).tap do |c|
+            c.table_name = 'public.providers'
+          end
+
+          expect(model.filterbuilder_filter(twelve_month_panel_target: { lte: 1 }).to_sql).to eq <<~SQL.squish
+            SELECT \"public\".\"providers\".* FROM \"public\".\"providers\" WHERE (\"public\".\"providers\".\"twelve_month_panel_target\" <= 1)
+          SQL
+
+          expect(model.filterbuilder_filter(twelve_month_panel_target: { gte: 1 }).to_sql).to eq <<~SQL.squish
+            SELECT \"public\".\"providers\".* FROM \"public\".\"providers\" WHERE (\"public\".\"providers\".\"twelve_month_panel_target\" >= 1)
+          SQL
+
+          expect(model.filterbuilder_filter(twelve_month_panel_target: { between: { min: 1, max: 2} }).to_sql).to eq <<~SQL.squish
+            SELECT \"public\".\"providers\".* FROM \"public\".\"providers\" WHERE (\"public\".\"providers\".\"twelve_month_panel_target\" BETWEEN 1 AND 2)
+          SQL
+
+          expect(model.filterbuilder_filter(npi: { does_not_match_case_insensitive: '^3a.*$' }).to_sql).to eq <<~SQL.squish
+            SELECT \"public\".\"providers\".* FROM \"public\".\"providers\" WHERE (\"public\".\"providers\".\"npi\" !~* '^3a.*$')
+          SQL
+        end
+      end
     end
 
     context 'with an unsupported operator keyword' do
