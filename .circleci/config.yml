@@ -15,6 +15,8 @@ working_directory_and_steps_defaults: &working_directory_and_steps_defaults
           - ./vendor/bundle
         key: v1-dependencies-{{ .Branch }}-{{ .Revision }}
     - run: bundle exec appraisal install
+    # Fixes the following error: Could not find date-3.3.3 in any of the sources
+    - run: BUNDLE_GEMFILE=/home/circleci/repo/gemfiles/rails_5_0.gemfile bundle --full-index
     - run: bundle exec appraisal rails-5-0 'cd spec/dummy/ && rails db:environment:set RAILS_ENV=test'
     - run: bundle exec appraisal rails-5-2 'cd spec/dummy/ && rails db:environment:set RAILS_ENV=test'
     - run: bundle exec appraisal 'cd spec/dummy/ && rake db:schema:load'
