@@ -106,12 +106,14 @@ Supported operator keywords:
 - Clone repo
 - `cd filter_builder`
 - `bundle install`
+- `bundle exec appraisal install`
+- `bundle exec appraisal 'cd spec/dummy; bundle exec rake db:reset'`
 - Start postgres
 - Create a postgres user with name "filter_builder" that can create databases:
-    - `psql postgres`
-    - `CREATE USER filter_builder WITH CREATEDB;`
+  - `psql postgres`
+  - `CREATE USER filter_builder WITH CREATEDB;`
 - `bundle exec rake db:reset`
 
 To run specs:
 
-- `bundle exec rspec`
+- `bundle exec appraisal rspec`
